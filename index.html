@@ -3,217 +3,419 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>How to Think About Being Alive — A 4-Week Course</title>
+<title>How to Think About Being Alive — A Self-Guided Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #f6f1e7;
-    --paper-2: #efe6d4;
-    --ink: #2a2622;
-    --ink-soft: #5a5249;
-    --accent: #7a4f2c;
-    --accent-2: #a8642f;
-    --line: #d8cdb6;
-    --highlight: #fff1a8;
-    --highlight-pink: #f4d6dd;
-    --good: #4a7a4a;
-    --bad: #a44a4a;
-    --radius: 14px;
-    --shadow: 0 6px 28px rgba(80, 60, 30, 0.08);
+    --cream: #efe6d0;
+    --cream-light: #f6efdc;
+    --cream-warm: #e4d8b6;
+    --brown: #2a1a0e;
+    --brown-mid: #4a3520;
+    --brown-soft: #7a5c40;
+    --brown-deep: #1f1209;
+    --blue: #a4b8c6;
+    --blue-deep: #6a8499;
+    --blue-soft: #cad6dd;
+    --line: #c6b48a;
+    --line-soft: #d9caa6;
+    --highlight: #f0e4b8;
+    --good: #6b8761;
+    --bad: #a55c52;
+    --serif: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
-    background: var(--paper);
-    color: var(--ink);
-    line-height: 1.65;
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--brown);
+    line-height: 1.6;
+    font-size: 16px;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
-  .app { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
 
-  /* Sidebar */
-  aside {
-    background: var(--paper-2);
-    border-right: 1px solid var(--line);
-    padding: 28px 22px 80px;
-    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  /* HEADER */
+  header.site {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(239, 230, 208, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line-soft);
   }
-  aside h1 {
-    font-family: "Iowan Old Style", Georgia, serif;
-    font-size: 20px; line-height: 1.25; margin: 0 0 4px;
-    color: var(--ink);
+  .nav-wrap {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px;
   }
-  aside .sub { font-size: 13px; color: var(--ink-soft); font-style: italic; margin-bottom: 22px; }
-  .progress-wrap { margin-bottom: 22px; }
-  .progress-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
-  .progress-bar { height: 6px; background: #e2d6bc; border-radius: 4px; overflow: hidden; }
-  .progress-bar > div { height: 100%; background: var(--accent); width: 0%; transition: width .35s ease; }
-  .week {
-    margin-bottom: 14px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: rgba(255, 250, 240, .55);
-    overflow: hidden;
+  .logo {
+    font-family: var(--serif);
+    font-size: 19px; font-weight: 500; line-height: 1.1;
+    letter-spacing: -0.01em; color: var(--brown);
+    cursor: pointer; text-decoration: none;
   }
-  .week-head {
-    padding: 10px 12px; cursor: pointer;
-    display: flex; align-items: baseline; justify-content: space-between;
-    background: rgba(255, 245, 220, .55);
-  }
-  .week-head .wk-title { font-weight: 700; font-size: 14px; }
-  .week-head .wk-meta { font-size: 11px; color: var(--ink-soft); }
-  .week-body { display: none; padding: 6px 8px 10px; }
-  .week.open .week-body { display: block; }
-  .ch-link {
-    display: flex; align-items: center; gap: 8px;
-    padding: 7px 9px; border-radius: 8px;
-    cursor: pointer; font-size: 13.5px; color: var(--ink);
-    text-decoration: none;
-  }
-  .ch-link:hover { background: rgba(160, 100, 50, .08); }
-  .ch-link.active { background: rgba(122, 79, 44, .12); font-weight: 600; }
-  .ch-dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--accent); flex-shrink: 0; }
-  .ch-link.done .ch-dot { background: var(--accent); }
+  .logo em { font-style: italic; font-weight: 400; color: var(--blue-deep); }
+  .nav-progress { display: flex; align-items: center; gap: 12px; font-family: var(--sans); font-size: 12px; color: var(--brown-soft); letter-spacing: 0.04em; text-transform: uppercase; }
+  .pdots { display: flex; gap: 6px; }
+  .pdot { width: 26px; height: 4px; border-radius: 2px; background: var(--cream-warm); transition: background .3s; cursor: pointer; }
+  .pdot.partial { background: linear-gradient(to right, var(--brown) var(--p), var(--cream-warm) var(--p)); }
+  .pdot.done { background: var(--brown); }
 
-  /* Main */
-  main { padding: 56px 64px 120px; max-width: 820px; }
-  .crumbs { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 10px; }
-  h2.ch-title { font-size: 32px; line-height: 1.2; margin: 0 0 8px; color: var(--ink); font-weight: 700; }
-  .ch-sub { font-size: 16px; color: var(--ink-soft); font-style: italic; margin-bottom: 28px; }
-  .flagged {
-    background: #fff8d8;
-    border-left: 4px solid var(--accent-2);
-    padding: 14px 18px;
-    border-radius: 8px;
+  /* LAYOUT */
+  main { max-width: 1200px; margin: 0 auto; padding: 0 32px 120px; }
+  .container-narrow { max-width: 720px; margin: 0 auto; }
+  .eyebrow {
+    font-family: var(--sans); font-size: 11.5px; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--brown-soft);
+  }
+  .eyebrow.blue { color: var(--blue-deep); }
+
+  /* HOME */
+  .hero {
+    padding: 88px 0 56px;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 56px;
+    position: relative;
+  }
+  .hero .eyebrow { margin-bottom: 28px; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 92px);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--brown);
     margin: 0 0 28px;
-    font-size: 15px;
-    color: #4a3a26;
+    max-width: 14ch;
   }
-  .flagged strong { color: var(--accent); }
-  .content p { margin: 0 0 16px; font-size: 17px; }
-  .content h3 { font-size: 19px; margin: 28px 0 8px; color: var(--accent); }
-  .content em.term { background: var(--highlight); padding: 0 3px; border-radius: 3px; font-style: normal; }
-  .content blockquote {
-    margin: 18px 0; padding: 8px 18px;
-    border-left: 3px solid var(--accent);
-    color: var(--ink-soft); font-style: italic;
+  .hero h1 em { font-style: italic; font-weight: 300; color: var(--blue-deep); }
+  .hero .lede {
+    font-family: var(--serif);
+    font-style: italic; font-weight: 300;
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.45; color: var(--brown-mid);
+    max-width: 540px;
+  }
+  .hero-side {
+    position: absolute; right: 0; top: 88px;
+    width: 220px; opacity: 0.85;
+    color: var(--brown-soft);
+  }
+  @media (max-width: 900px) { .hero-side { display: none; } }
+
+  .weeks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+    margin-bottom: 48px;
+  }
+  .week-card {
+    border: 1px solid var(--line-soft);
+    background: var(--cream-light);
+    border-radius: 18px;
+    padding: 36px 32px 28px;
+    cursor: pointer;
+    transition: transform .22s ease, box-shadow .22s ease, background .22s;
+    position: relative; overflow: hidden;
+  }
+  .week-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(60, 40, 20, 0.08);
+    background: #faf3df;
+  }
+  .week-card.alt { background: var(--brown); color: var(--cream-light); border-color: var(--brown); }
+  .week-card.alt .wc-number { color: var(--cream-warm); }
+  .week-card.alt .wc-blurb { color: rgba(245, 235, 210, .78); }
+  .week-card.alt .wc-progress { color: var(--cream-warm); }
+  .week-card.alt .illo { color: var(--blue-soft); }
+  .week-card.blue { background: var(--blue-soft); border-color: var(--blue); }
+  .week-card .illo { color: var(--brown-mid); margin-bottom: 18px; }
+  .week-card .wc-number { font-family: var(--sans); font-size: 11.5px; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 6px; color: var(--brown-soft); }
+  .week-card h3 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 30px; line-height: 1.08; letter-spacing: -0.01em;
+    margin: 4px 0 12px;
+  }
+  .week-card h3 em { font-style: italic; font-weight: 300; }
+  .week-card .wc-blurb {
+    font-size: 14.5px; line-height: 1.55; color: var(--brown-mid); margin: 0 0 22px;
+  }
+  .week-card .wc-progress { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brown-soft); }
+
+  .closing-strip {
+    margin-top: 88px; padding: 56px 48px;
+    background: var(--brown); color: var(--cream-light);
+    border-radius: 18px; text-align: center;
+  }
+  .closing-strip .eyebrow { color: var(--cream-warm); }
+  .closing-strip p {
+    font-family: var(--serif); font-style: italic; font-size: 22px;
+    max-width: 560px; margin: 18px auto 0; line-height: 1.45;
+    color: var(--cream-warm);
   }
 
-  /* Quiz */
+  /* WEEK PAGE */
+  .back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--sans); font-size: 13px; letter-spacing: 0.04em;
+    color: var(--brown-soft); text-decoration: none; padding: 36px 0 0;
+    cursor: pointer; transition: color .15s;
+  }
+  .back-link:hover { color: var(--brown); }
+  .week-hero {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 48px; align-items: end;
+    padding: 32px 0 56px;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 48px;
+  }
+  .week-hero .eyebrow { margin-bottom: 18px; }
+  .week-hero h2 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(40px, 5.5vw, 68px); line-height: 1; letter-spacing: -0.02em;
+    margin: 0 0 22px; max-width: 14ch;
+  }
+  .week-hero h2 em { font-style: italic; font-weight: 300; color: var(--blue-deep); }
+  .week-hero .blurb {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 19px; line-height: 1.45; color: var(--brown-mid);
+    max-width: 540px;
+  }
+  .week-hero .illo-wrap { color: var(--brown-mid); }
+  @media (max-width: 800px) { .week-hero { grid-template-columns: 1fr; } .week-hero .illo-wrap { display: none; } }
+
+  .chapters-list { display: flex; flex-direction: column; }
+  .chapter-row {
+    display: grid; grid-template-columns: 60px 1fr 24px;
+    gap: 28px; align-items: start;
+    padding: 26px 0;
+    border-top: 1px solid var(--line-soft);
+    cursor: pointer;
+    transition: background .15s, padding-left .2s;
+  }
+  .chapter-row:hover { background: rgba(255, 250, 235, 0.4); padding-left: 8px; }
+  .chapter-row:last-child { border-bottom: 1px solid var(--line-soft); }
+  .cr-num { font-family: var(--serif); font-size: 24px; font-weight: 400; color: var(--brown-soft); padding-top: 2px; }
+  .cr-body h4 {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 22px; line-height: 1.18; margin: 0 0 6px;
+    letter-spacing: -0.005em;
+  }
+  .cr-body p { font-size: 14.5px; color: var(--brown-mid); margin: 0; }
+  .cr-status { padding-top: 8px; }
+  .cr-status .dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 1.5px solid var(--brown-soft);
+    transition: all .2s;
+  }
+  .chapter-row.done .cr-status .dot { background: var(--brown); border-color: var(--brown); }
+  .chapter-row.done .cr-num { color: var(--brown); }
+
+  /* CHAPTER PAGE */
+  .crumbs {
+    font-family: var(--sans); font-size: 12px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--brown-soft);
+    padding: 36px 0 24px; display: flex; gap: 10px;
+  }
+  .crumbs a { color: var(--brown-soft); text-decoration: none; cursor: pointer; }
+  .crumbs a:hover { color: var(--brown); }
+  .crumbs .sep { opacity: 0.5; }
+  .ch-hero {
+    padding: 12px 0 56px;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 48px;
+  }
+  .ch-hero h1 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(36px, 5vw, 58px); line-height: 1.05; letter-spacing: -0.02em;
+    margin: 0 0 18px; max-width: 18ch;
+  }
+  .ch-hero h1 em { font-style: italic; font-weight: 300; }
+  .ch-hero .ch-sub {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 19px; color: var(--brown-mid); margin: 0; max-width: 580px;
+  }
+  .flagged {
+    background: var(--blue-soft);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 0 0 40px;
+    font-size: 15px; line-height: 1.55;
+    color: var(--brown-mid);
+    border-left: 3px solid var(--blue-deep);
+  }
+  .flagged strong { color: var(--brown); font-weight: 600; }
+  .flagged em { font-style: italic; }
+  .content { font-size: 17.5px; line-height: 1.7; color: var(--brown); }
+  .content p { margin: 0 0 22px; }
+  .content h3 {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 23px; line-height: 1.25; letter-spacing: -0.005em;
+    color: var(--brown); margin: 40px 0 14px;
+  }
+  .content em.term {
+    background: var(--highlight); font-style: normal;
+    padding: 0 5px; border-radius: 3px; font-weight: 500;
+  }
+  .content blockquote {
+    margin: 28px 0; padding: 6px 0 6px 26px;
+    border-left: 3px solid var(--blue-deep);
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: 19px; line-height: 1.5; color: var(--brown-mid);
+  }
+  .content strong { font-weight: 600; }
+
+  /* CARDS */
   .card {
-    background: rgba(255, 250, 240, .8);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 22px 26px;
-    margin: 36px 0;
-    box-shadow: var(--shadow);
+    background: var(--cream-light);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    padding: 28px 30px;
+    margin: 40px 0;
   }
-  .card h4 {
-    font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--accent); margin: 0 0 6px;
+  .card .card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .card .card-eyebrow {
+    font-family: var(--sans); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--blue-deep);
   }
-  .card .q { font-size: 17px; margin: 4px 0 14px; }
+  .card .card-line { flex: 1; height: 1px; background: var(--line-soft); }
+  .card .q {
+    font-family: var(--serif); font-size: 22px; line-height: 1.3; font-weight: 400;
+    margin: 4px 0 18px;
+  }
   .opt {
-    display: block; padding: 10px 14px; margin: 6px 0;
-    border: 1px solid var(--line); border-radius: 10px;
-    background: var(--paper); cursor: pointer;
-    transition: all .15s ease;
-    font-size: 15.5px;
+    display: block; padding: 14px 18px; margin: 8px 0;
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    background: var(--cream);
+    cursor: pointer;
+    font-size: 15.5px; line-height: 1.45;
+    transition: all .15s;
   }
-  .opt:hover { background: rgba(168, 100, 47, .07); }
-  .opt.selected { border-color: var(--accent); background: rgba(168, 100, 47, .1); }
-  .opt.correct { border-color: var(--good); background: #e9f1e3; }
-  .opt.incorrect { border-color: var(--bad); background: #f3e3e3; }
+  .opt:hover { background: var(--cream-warm); border-color: var(--line); }
+  .opt.selected { border-color: var(--brown); background: var(--cream-warm); }
+  .opt.correct { border-color: var(--good); background: #e3ecdc; color: #2d3f24; }
+  .opt.incorrect { border-color: var(--bad); background: #f0dbd6; color: #5e2a23; }
+  .opt[data-disabled] { cursor: default; }
   .feedback {
-    margin-top: 12px; padding: 12px 14px; border-radius: 8px;
-    font-size: 14.5px; display: none;
+    margin-top: 14px; padding: 14px 16px;
+    border-radius: 10px; font-size: 14.5px; line-height: 1.55;
+    display: none;
   }
   .feedback.show { display: block; }
-  .feedback.ok { background: #e9f1e3; color: #2d4a2d; }
-  .feedback.no { background: #f3e3e3; color: #5a2a2a; }
-
-  /* Journal */
-  .journal textarea {
-    width: 100%; min-height: 140px; margin-top: 8px;
-    border: 1px solid var(--line); border-radius: 10px;
-    padding: 14px; font: inherit; font-size: 15.5px;
-    background: #fdfaf3; color: var(--ink); resize: vertical;
+  .feedback.ok { background: #e3ecdc; color: #2d3f24; }
+  .feedback.no { background: #f0dbd6; color: #5e2a23; }
+  textarea.journal-input {
+    width: 100%; min-height: 160px;
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: var(--serif);
+    font-size: 16.5px; line-height: 1.55;
+    background: var(--cream);
+    color: var(--brown);
+    resize: vertical;
+    transition: border-color .15s, background .15s;
   }
-  .journal textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
-  .save-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: 13px; color: var(--ink-soft); }
-
-  /* Nav buttons */
-  .nav-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; }
-  button.btn {
-    font: inherit; cursor: pointer;
-    padding: 10px 18px; border-radius: 999px;
-    border: 1px solid var(--accent); background: var(--paper);
-    color: var(--accent); font-size: 14.5px; font-weight: 600;
-    transition: all .15s ease;
+  textarea.journal-input:focus { outline: none; border-color: var(--brown-soft); background: #fcf7e4; }
+  .save-row {
+    margin-top: 10px;
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--brown-soft); font-family: var(--sans);
   }
-  button.btn:hover { background: var(--accent); color: var(--paper); }
-  button.btn.primary { background: var(--accent); color: var(--paper); }
-  button.btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); }
-  button.btn:disabled { opacity: .4; cursor: not-allowed; }
 
-  /* Welcome */
-  .welcome { padding: 24px 0; }
-  .welcome h2 { font-size: 36px; margin: 0 0 8px; }
-  .welcome .lede { font-size: 18px; font-style: italic; color: var(--ink-soft); margin-bottom: 28px; max-width: 580px; }
-  .week-card {
-    border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 22px 26px; margin: 14px 0;
-    background: rgba(255, 250, 240, .65);
-    cursor: pointer; transition: all .15s ease;
+  /* BUTTONS */
+  .btn {
+    font: inherit; font-family: var(--sans); font-weight: 500;
+    cursor: pointer; padding: 12px 22px;
+    border-radius: 999px; border: 1px solid var(--brown);
+    background: transparent; color: var(--brown);
+    font-size: 13.5px; letter-spacing: 0.04em;
+    transition: all .15s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
   }
-  .week-card:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
-  .week-card h3 { margin: 0 0 4px; font-size: 19px; color: var(--accent); }
-  .week-card p { margin: 0; color: var(--ink-soft); font-size: 14.5px; }
+  .btn:hover { background: var(--brown); color: var(--cream-light); }
+  .btn.primary { background: var(--brown); color: var(--cream-light); }
+  .btn.primary:hover { background: var(--brown-deep); border-color: var(--brown-deep); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn:disabled:hover { background: transparent; color: var(--brown); }
 
-  /* Misc */
-  .footer-note { font-size: 12.5px; color: var(--ink-soft); margin-top: 40px; font-style: italic; text-align: center; }
-  @media (max-width: 820px) {
-    .app { grid-template-columns: 1fr; }
-    aside { position: relative; height: auto; }
-    main { padding: 28px 22px 80px; }
+  /* PREV/NEXT */
+  .nav-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; margin-top: 56px; padding-top: 36px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .nav-link {
+    color: var(--brown-soft); text-decoration: none;
+    font-family: var(--sans); font-size: 13.5px;
+    display: flex; flex-direction: column; gap: 4px;
+    cursor: pointer; transition: color .15s;
+  }
+  .nav-link:hover { color: var(--brown); }
+  .nav-link .nl-eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.75; }
+  .nav-link .nl-title { font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.2; color: var(--brown); }
+  .nav-link.right-align { text-align: right; align-items: flex-end; }
+
+  /* Fade in */
+  .view { animation: fadeIn .5s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 700px) {
+    main { padding: 0 22px 80px; }
+    .hero { padding: 56px 0 36px; }
+    .nav-wrap { padding: 14px 22px; flex-wrap: wrap; gap: 10px; }
+    .nav-progress { width: 100%; justify-content: flex-end; }
+    .week-card { padding: 28px 24px; }
+    .nav-row { grid-template-columns: 1fr; gap: 14px; }
+    .nav-link.right-align { text-align: left; align-items: flex-start; }
+    .chapter-row { grid-template-columns: 44px 1fr 20px; gap: 14px; }
   }
 </style>
 </head>
 <body>
-<div class="app">
-  <aside>
-    <h1>How to Think About Being Alive</h1>
-    <div class="sub">A self-guided 4-week course in philosophy</div>
-    <div class="progress-wrap">
-      <div class="progress-label">Your progress</div>
-      <div class="progress-bar"><div id="progress-fill"></div></div>
-      <div id="progress-text" style="font-size:12px;color:var(--ink-soft);margin-top:6px;"></div>
+
+<header class="site">
+  <div class="nav-wrap">
+    <a class="logo" onclick="goHome()">How to think about <em>being</em> alive</a>
+    <div class="nav-progress">
+      <span id="progress-label">0/18</span>
+      <div class="pdots" id="pdots"></div>
     </div>
-    <a class="ch-link" id="home-link" onclick="goHome()"><span class="ch-dot" style="border-color:var(--ink-soft);background:transparent"></span>Course home</a>
-    <div id="weeks"></div>
-  </aside>
-  <main id="main"></main>
-</div>
+  </div>
+</header>
+
+<main id="main"></main>
 
 <script>
-// =========================================================
-//  Course data — content keyed to the user's highlights & comments
-// =========================================================
+// ===== COURSE DATA =====
 const COURSE = [
   {
     week: 1,
-    title: "Foundations & The Self You're Authoring",
+    title: "Foundations & The Self <em>You're Authoring</em>",
     blurb: "What philosophy actually is, how you know what you know, the freedom question, and meaning as something you make rather than find.",
+    cardStyle: "default",
+    illo: "seated",
     chapters: [
       {
         id: "1.1",
         title: "Why philosophy is asking, not answering",
-        sub: "The five branches, and why ethics + metaphysics carry the most weight for daily life.",
-        flagged: "You highlighted: <em>\"the disciplined practice of asking hard questions and following them wherever they lead.\"</em> This chapter sits with the orientation behind that line — that philosophy is a posture, not a body of facts.",
+        sub: "The five branches — and why ethics and metaphysics carry the most weight for daily life.",
+        flagged: "You highlighted: <em>\"the disciplined practice of asking hard questions and following them wherever they lead.\"</em> This chapter sits with the orientation behind that line — philosophy as a posture, not a body of facts.",
         body: `
           <p>Philosophy comes from <em class="term">philos</em> (love) + <em class="term">sophia</em> (wisdom). A philosopher is not someone who has solved life. A philosopher is someone who has learned to sit with the unsolvable without panicking — which turns out to be a transferable skill.</p>
           <p>The discipline has five branches: <strong>metaphysics</strong> (what is real), <strong>epistemology</strong> (what can be known), <strong>ethics</strong> (how to live), <strong>logic</strong> (how to reason well), and <strong>aesthetics</strong> (what beauty is and what taste reveals). You already ask each of these informally. The discipline just refuses to let you drop the question.</p>
-          <h3>What this implies for how you read the rest of the course</h3>
+          <h3>What this implies for how you read the rest</h3>
           <p>Treat every framework you meet as a tool, not a verdict. The point is not to choose a "side" — it is to learn how to think well enough that, when life requires it, you have language and structure for the choices you are already making.</p>
         `,
         quiz: {
@@ -227,7 +429,7 @@ const COURSE = [
       {
         id: "1.2",
         title: "Epistemology — how do you know what you know?",
-        sub: "Your first flagged comment was \"Look more into this.\" Here it is.",
+        sub: "Your first flagged comment was 'Look more into this.' Here it is.",
         flagged: "You marked epistemology with <strong>\"Look more into this.\"</strong> The branch matters because it quietly governs how confident you let yourself be about anything.",
         body: `
           <p>Epistemology asks: what is the difference between believing something and knowing it? The classical answer is that <em class="term">knowledge</em> is justified true belief. You believe it, it happens to be true, and you have a reason for believing it. Strip away any of the three legs and you have something less.</p>
@@ -240,12 +442,7 @@ const COURSE = [
         `,
         quiz: {
           q: "By the classical definition, when does a belief become knowledge?",
-          opts: [
-            "When most people agree with it",
-            "When it's both true and you have justification for it",
-            "When it can be proven mathematically",
-            "When it feels certain"
-          ],
+          opts: ["When most people agree with it", "When it's both true and you have justification for it", "When it can be proven mathematically", "When it feels certain"],
           correct: 1,
           why: "Knowledge = justified true belief. You can have a true belief by luck, or a justified false belief — neither counts as knowledge."
         },
@@ -266,12 +463,7 @@ const COURSE = [
         `,
         quiz: {
           q: "The compatibilist position says:",
-          opts: [
-            "Free will doesn't exist — get over it.",
-            "Free will exists in a magical, uncaused way.",
-            "Free will and determinism are compatible — you're 'free' when actions flow from your own values, even if those were shaped by causes.",
-            "Whether you have free will depends on the day."
-          ],
+          opts: ["Free will doesn't exist — get over it.", "Free will exists in a magical, uncaused way.", "Free will and determinism are compatible — you're 'free' when actions flow from your own values, even if those were shaped by causes.", "Whether you have free will depends on the day."],
           correct: 2,
           why: "Compatibilism redefines freedom as acting in line with your own desires and values, without needing those desires to be uncaused. It's the most livable of the three positions."
         },
@@ -292,12 +484,7 @@ const COURSE = [
         `,
         quiz: {
           q: "For the existentialists, what is the relationship between living in the present and finding meaning?",
-          opts: [
-            "Living in the present is a distraction from finding real meaning.",
-            "Meaning exists eternally and the present is the moment you discover it.",
-            "Meaning is composed in the present — there is no pre-existing meaning to find.",
-            "The present doesn't matter; what matters is your legacy."
-          ],
+          opts: ["Living in the present is a distraction from finding real meaning.", "Meaning exists eternally and the present is the moment you discover it.", "Meaning is composed in the present — there is no pre-existing meaning to find.", "The present doesn't matter; what matters is your legacy."],
           correct: 2,
           why: "Existence precedes essence. There is no pre-formed meaning waiting to be discovered. Meaning is added to the world through the choices and acts of present-tense humans."
         },
@@ -318,12 +505,7 @@ const COURSE = [
         `,
         quiz: {
           q: "If the self is a process rather than a fixed thing, which of these is the better framing?",
-          opts: [
-            "I am betraying who I am if I change.",
-            "I owe my future self total continuity with my past self.",
-            "I am the same person I was at five; I'm just hiding it.",
-            "Selfing is ongoing — I am allowed to revise."
-          ],
+          opts: ["I am betraying who I am if I change.", "I owe my future self total continuity with my past self.", "I am the same person I was at five; I'm just hiding it.", "Selfing is ongoing — I am allowed to revise."],
           correct: 3,
           why: "The self is not a noun being preserved — it's a verb being lived. Revision is not betrayal; it's the nature of the process."
         },
@@ -333,8 +515,10 @@ const COURSE = [
   },
   {
     week: 2,
-    title: "Frameworks for Living",
-    blurb: "Five lenses for daily life — Stoicism, existentialism, utilitarianism (and its politics), Kant on intent vs impact, and virtue ethics' pursuit of flourishing.",
+    title: "Frameworks <em>for Living</em>",
+    blurb: "Five lenses for daily life — Stoicism, existentialism, utilitarianism and its politics, Kant on intent vs impact, and virtue ethics' pursuit of flourishing.",
+    cardStyle: "alt",
+    illo: "atlas",
     chapters: [
       {
         id: "2.1",
@@ -352,12 +536,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Which is the misuse of Stoicism — the failure mode to watch for?",
-          opts: [
-            "Using the dichotomy of control to focus your effort",
-            "Practicing negative visualization to interrupt the hedonic treadmill",
-            "Suppressing emotions you ought to feel, in the name of being 'unbothered'",
-            "Taking the view from above when a problem feels enormous"
-          ],
+          opts: ["Using the dichotomy of control to focus your effort", "Practicing negative visualization to interrupt the hedonic treadmill", "Suppressing emotions you ought to feel, in the name of being 'unbothered'", "Taking the view from above when a problem feels enormous"],
           correct: 2,
           why: "Stoicism is about not being ruled by emotion, not about pretending you don't have any. Using it to bypass grief that needs feeling is the failure mode."
         },
@@ -382,12 +561,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Sartre's notion of \"bad faith\" describes:",
-          opts: [
-            "Choosing to do something morally bad",
-            "Losing your religious faith",
-            "Pretending you had no choice when you did — hiding behind a role to avoid responsibility",
-            "Disagreeing with another existentialist"
-          ],
+          opts: ["Choosing to do something morally bad", "Losing your religious faith", "Pretending you had no choice when you did — hiding behind a role to avoid responsibility", "Disagreeing with another existentialist"],
           correct: 2,
           why: "Bad faith is the lie we tell ourselves to escape the burden of freedom — denying that a choice was a choice."
         },
@@ -411,12 +585,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Which empirical claim is doing real work in the utilitarian case for redistribution?",
-          opts: [
-            "Money is the root of all evil.",
-            "The free market always fails.",
-            "Money produces diminishing marginal utility — a dollar matters more to a poor person than a rich one.",
-            "All people are equally talented."
-          ],
+          opts: ["Money is the root of all evil.", "The free market always fails.", "Money produces diminishing marginal utility — a dollar matters more to a poor person than a rich one.", "All people are equally talented."],
           correct: 2,
           why: "Diminishing marginal utility is the lever: if a dollar produces more welfare in the hands of the poor than the rich, redistribution increases aggregate welfare."
         },
@@ -441,12 +610,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Where do Kant and utilitarianism most clearly part ways?",
-          opts: [
-            "Whether lying is wrong in everyday life",
-            "Whether kindness matters",
-            "Whether you can sacrifice one person to save five — Kant says no, utilitarianism (in principle) says yes",
-            "Whether morality is about being happy"
-          ],
+          opts: ["Whether lying is wrong in everyday life", "Whether kindness matters", "Whether you can sacrifice one person to save five — Kant says no, utilitarianism (in principle) says yes", "Whether morality is about being happy"],
           correct: 2,
           why: "They converge in everyday cases. The split is at the edges — utilitarianism allows the trade in principle; Kant forbids using a person merely as a means, no matter the math."
         },
@@ -469,12 +633,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Which of the following is most consistent with eudaimonia, in Aristotle's sense?",
-          opts: [
-            "Feeling pleasure most of the time",
-            "Avoiding all difficulty",
-            "Becoming the fullest version of what a human being can be — exercising virtue in community over a whole life",
-            "Optimizing your day for maximum dopamine"
-          ],
+          opts: ["Feeling pleasure most of the time", "Avoiding all difficulty", "Becoming the fullest version of what a human being can be — exercising virtue in community over a whole life", "Optimizing your day for maximum dopamine"],
           correct: 2,
           why: "Eudaimonia isn't a mood. It's the shape of a life lived at its full human capacity — virtue, friendship, contribution, reason."
         },
@@ -484,8 +643,10 @@ const COURSE = [
   },
   {
     week: 3,
-    title: "Real Relationships",
+    title: "Real <em>Relationships</em>",
     blurb: "Aristotle's virtue friendships, Buber's I-Thou moments, care ethics, and Simone Weil on attention as the rarest form of generosity.",
+    cardStyle: "blue",
+    illo: "meeting",
     chapters: [
       {
         id: "3.1",
@@ -507,12 +668,7 @@ const COURSE = [
         `,
         quiz: {
           q: "According to Aristotle, what's the single most consistent indicator of a virtue friendship?",
-          opts: [
-            "How often you text",
-            "How much fun you have together",
-            "How long you've known each other in calendar years",
-            "Mutual moral seriousness — each person committed to the other's becoming, willing to say the hard thing"
-          ],
+          opts: ["How often you text", "How much fun you have together", "How long you've known each other in calendar years", "Mutual moral seriousness — each person committed to the other's becoming, willing to say the hard thing"],
           correct: 3,
           why: "Time matters, but proximity isn't friendship. The defining marker is whether both people are oriented toward each other's flourishing — and willing to act on that, even uncomfortably."
         },
@@ -535,12 +691,7 @@ const COURSE = [
         `,
         quiz: {
           q: "What's the trap to avoid in trying to apply I-Thou?",
-          opts: [
-            "Thinking you can or should make every interaction I-Thou",
-            "Putting your phone away",
-            "Listening fully when someone speaks",
-            "Treating another person as a full subject"
-          ],
+          opts: ["Thinking you can or should make every interaction I-Thou", "Putting your phone away", "Listening fully when someone speaks", "Treating another person as a full subject"],
           correct: 0,
           why: "I-Thou is a kind of moment, not a permanent state. The goal is increasing the proportion — being available to receive these moments when they arrive — not transcending all I-It interactions."
         },
@@ -562,12 +713,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Which of the three care-ethics verbs do practitioners say is most often where moral failures actually happen?",
-          opts: [
-            "Showing up — people simply don't",
-            "Listening — people stop hearing",
-            "Noticing — people miss the small signal and then it's too late",
-            "Acting — people fail to take action"
-          ],
+          opts: ["Showing up — people simply don't", "Listening — people stop hearing", "Noticing — people miss the small signal and then it's too late", "Acting — people fail to take action"],
           correct: 2,
           why: "Most failures of care look not like cruelty but like inattention. Noticing — catching the small signal — is the most consequential and the most easily missed."
         },
@@ -591,12 +737,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Weil thinks true attention requires:",
-          opts: [
-            "Asking the right follow-up question",
-            "Suspending the self — staying empty and available long enough that the other person's reality can actually arrive",
-            "Diagnosing the problem accurately",
-            "Reassuring the other person"
-          ],
+          opts: ["Asking the right follow-up question", "Suspending the self — staying empty and available long enough that the other person's reality can actually arrive", "Diagnosing the problem accurately", "Reassuring the other person"],
           correct: 1,
           why: "Attention, for Weil, is the willingness to wait — to keep yourself empty rather than rushing to metabolize the other person into your framework."
         },
@@ -606,8 +747,10 @@ const COURSE = [
   },
   {
     week: 4,
-    title: "Community, Belonging & Building Your Worldview",
-    blurb: "Communitarianism's strong claim that belonging is constitutive of personhood, loneliness as civic crisis, and the ongoing project of composing your own worldview.",
+    title: "Community, Belonging & <em>Building Your Worldview</em>",
+    blurb: "Communitarianism's claim that belonging is constitutive of personhood, loneliness as civic crisis, and the ongoing project of composing your own worldview.",
+    cardStyle: "default",
+    illo: "concentric",
     chapters: [
       {
         id: "4.1",
@@ -627,12 +770,7 @@ const COURSE = [
         `,
         quiz: {
           q: "The communitarian claim that belonging is \"constitutive\" of personhood means:",
-          opts: [
-            "Communities are nice to have if you can find one",
-            "Community is a moral obligation imposed on you",
-            "You do not pre-exist your communities — the values, language, and categories that make you a self were transmitted by them",
-            "Strong communities are better than weak ones"
-          ],
+          opts: ["Communities are nice to have if you can find one", "Community is a moral obligation imposed on you", "You do not pre-exist your communities — the values, language, and categories that make you a self were transmitted by them", "Strong communities are better than weak ones"],
           correct: 2,
           why: "Constitutive means: you can't bootstrap a self out of nothing. The lens that lets you make any choice was given by the communities that formed you."
         },
@@ -655,12 +793,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Why do contemporary philosophers say loneliness should be treated structurally, not just as a personal issue?",
-          opts: [
-            "Because lonely people are weak",
-            "Because belonging is constitutive of personhood — the absence of it isn't a feeling problem, it's a denial of a condition of being a person",
-            "Because therapy doesn't work",
-            "Because community is always virtuous"
-          ],
+          opts: ["Because lonely people are weak", "Because belonging is constitutive of personhood — the absence of it isn't a feeling problem, it's a denial of a condition of being a person", "Because therapy doesn't work", "Because community is always virtuous"],
           correct: 1,
           why: "Once you see belonging as constitutive — not optional — the response can't be purely individual. It has to be about rebuilding the conditions in which selves form."
         },
@@ -681,12 +814,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Which is the best stance toward your own philosophical views, by the principles in this course?",
-          opts: [
-            "Choose one school and adhere to it strictly to remain consistent",
-            "Avoid declaring views at all, to stay open",
-            "Hold them firmly enough to act on them, loosely enough to revise them",
-            "Adopt whichever framework is most popular"
-          ],
+          opts: ["Choose one school and adhere to it strictly to remain consistent", "Avoid declaring views at all, to stay open", "Hold them firmly enough to act on them, loosely enough to revise them", "Adopt whichever framework is most popular"],
           correct: 2,
           why: "Epistemic humility plus action. Confidence proportional to evidence, with the willingness to update when the evidence shifts."
         },
@@ -714,12 +842,7 @@ const COURSE = [
         `,
         quiz: {
           q: "Which book would best extend your interest in attention, listening, and the moral life of small acts?",
-          opts: [
-            "A Theory of Justice by John Rawls",
-            "The Myth of Sisyphus by Camus",
-            "Waiting for God by Simone Weil",
-            "Meditations by Marcus Aurelius"
-          ],
+          opts: ["A Theory of Justice by John Rawls", "The Myth of Sisyphus by Camus", "Waiting for God by Simone Weil", "Meditations by Marcus Aurelius"],
           correct: 2,
           why: "Weil's essay on attention is in this collection. It is short, demanding, and directly extends the thread you flagged."
         },
@@ -729,105 +852,175 @@ const COURSE = [
   }
 ];
 
-// =========================================================
-//  State (localStorage)
-// =========================================================
-const LS_KEY = "philosophy_course_v1";
-function loadState() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }
-  catch(e) { return {}; }
-}
+// ===== SVG LINE DRAWINGS =====
+const ILLOS = {
+  seated: (size = 140) => `
+    <svg viewBox="0 0 160 200" width="${size}" height="${size * 1.25}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="80" cy="48" rx="22" ry="26"/>
+      <path d="M 62 78 C 42 105, 32 150, 50 175"/>
+      <path d="M 98 78 C 118 105, 128 150, 110 175"/>
+      <path d="M 50 175 C 70 168, 90 168, 110 175"/>
+      <path d="M 62 78 C 70 95, 70 110, 60 130"/>
+      <path d="M 98 78 C 90 95, 90 110, 100 130"/>
+      <circle cx="60" cy="130" r="2.5" fill="currentColor"/>
+      <circle cx="100" cy="130" r="2.5" fill="currentColor"/>
+    </svg>`,
+  atlas: (size = 140) => `
+    <svg viewBox="0 0 180 220" width="${size}" height="${size * 1.22}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="90" cy="48" r="40"/>
+      <path d="M 65 78 C 55 95, 60 110, 75 115"/>
+      <path d="M 115 78 C 125 95, 120 110, 105 115"/>
+      <path d="M 75 115 L 78 200"/>
+      <path d="M 105 115 L 102 200"/>
+      <circle cx="90" cy="140" r="3" fill="currentColor"/>
+      <path d="M 70 165 C 80 175, 100 175, 110 165"/>
+    </svg>`,
+  meeting: (size = 160) => `
+    <svg viewBox="0 0 220 180" width="${size}" height="${size * 0.82}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="65" cy="50" rx="18" ry="22"/>
+      <ellipse cx="155" cy="50" rx="18" ry="22"/>
+      <path d="M 50 75 C 35 100, 35 140, 55 160"/>
+      <path d="M 80 75 C 92 92, 100 110, 100 130"/>
+      <path d="M 140 75 C 128 92, 120 110, 120 130"/>
+      <path d="M 170 75 C 185 100, 185 140, 165 160"/>
+      <path d="M 100 130 C 105 122, 115 122, 120 130"/>
+      <path d="M 55 160 C 80 168, 140 168, 165 160"/>
+    </svg>`,
+  concentric: (size = 150) => `
+    <svg viewBox="0 0 200 200" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="100" cy="100" r="22"/>
+      <circle cx="100" cy="100" r="52" opacity="0.7"/>
+      <circle cx="100" cy="100" r="82" opacity="0.5"/>
+      <circle cx="100" cy="100" r="4" fill="currentColor"/>
+      <circle cx="100" cy="48" r="3.5" fill="currentColor"/>
+      <circle cx="152" cy="100" r="3.5" fill="currentColor"/>
+      <circle cx="100" cy="152" r="3.5" fill="currentColor"/>
+      <circle cx="48" cy="100" r="3.5" fill="currentColor"/>
+      <circle cx="143" cy="62" r="3" fill="currentColor"/>
+      <circle cx="143" cy="138" r="3" fill="currentColor"/>
+      <circle cx="57" cy="62" r="3" fill="currentColor"/>
+      <circle cx="57" cy="138" r="3" fill="currentColor"/>
+    </svg>`
+};
+
+// ===== STATE =====
+const LS_KEY = "philosophy_course_v2";
+function loadState() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e) { return {}; } }
 function saveState(s) { localStorage.setItem(LS_KEY, JSON.stringify(s)); }
 let state = loadState();
 state.completed = state.completed || {};
 state.journals = state.journals || {};
 state.quizPicks = state.quizPicks || {};
-state.openWeek = (typeof state.openWeek === "number") ? state.openWeek : 1;
+state.view = state.view || "home";
 
-// =========================================================
-//  Render
-// =========================================================
+// ===== HELPERS =====
 function totalChapters() { return COURSE.reduce((n, w) => n + w.chapters.length, 0); }
 function completedCount() { return Object.keys(state.completed).filter(k => state.completed[k]).length; }
-function updateProgress() {
-  const pct = Math.round(100 * completedCount() / totalChapters());
-  document.getElementById("progress-fill").style.width = pct + "%";
-  document.getElementById("progress-text").textContent = `${completedCount()} / ${totalChapters()} chapters complete`;
-}
+function weekCompletedCount(w) { return w.chapters.filter(c => state.completed[c.id]).length; }
+function findChapter(id) { for (const w of COURSE) for (const c of w.chapters) if (c.id === id) return { week: w, chapter: c }; return null; }
+function nextChapter(id) { const all = COURSE.flatMap(w => w.chapters); const i = all.findIndex(c => c.id === id); return (i >= 0 && i < all.length - 1) ? all[i + 1] : null; }
+function prevChapter(id) { const all = COURSE.flatMap(w => w.chapters); const i = all.findIndex(c => c.id === id); return (i > 0) ? all[i - 1] : null; }
+function findWeekOf(chapterId) { for (const w of COURSE) if (w.chapters.find(c => c.id === chapterId)) return w; return null; }
 
-function renderSidebar() {
-  const wrap = document.getElementById("weeks");
+// ===== HEADER PROGRESS =====
+function renderHeaderProgress() {
+  document.getElementById("progress-label").textContent = `${completedCount()} / ${totalChapters()}`;
+  const wrap = document.getElementById("pdots");
   wrap.innerHTML = "";
   COURSE.forEach(w => {
-    const wEl = document.createElement("div");
-    wEl.className = "week" + (state.openWeek === w.week ? " open" : "");
-    const wHead = document.createElement("div");
-    wHead.className = "week-head";
-    const wDoneCount = w.chapters.filter(c => state.completed[c.id]).length;
-    wHead.innerHTML = `<span class="wk-title">Week ${w.week}: ${w.title.split('—')[0].trim()}</span><span class="wk-meta">${wDoneCount}/${w.chapters.length}</span>`;
-    wHead.onclick = () => { state.openWeek = (state.openWeek === w.week) ? null : w.week; saveState(state); renderSidebar(); };
-    wEl.appendChild(wHead);
-    const wBody = document.createElement("div");
-    wBody.className = "week-body";
-    w.chapters.forEach(c => {
-      const a = document.createElement("a");
-      a.className = "ch-link" + (state.completed[c.id] ? " done" : "") + (state.currentId === c.id ? " active" : "");
-      a.innerHTML = `<span class="ch-dot"></span>${c.id} · ${c.title}`;
-      a.onclick = () => loadChapter(c.id);
-      wBody.appendChild(a);
-    });
-    wEl.appendChild(wBody);
-    wrap.appendChild(wEl);
+    const dot = document.createElement("div");
+    const done = weekCompletedCount(w);
+    const pct = Math.round(100 * done / w.chapters.length);
+    if (pct === 100) dot.className = "pdot done";
+    else if (pct > 0) { dot.className = "pdot partial"; dot.style.setProperty("--p", pct + "%"); }
+    else dot.className = "pdot";
+    dot.title = `Week ${w.week}: ${done}/${w.chapters.length}`;
+    dot.onclick = () => loadWeek(w.week);
+    wrap.appendChild(dot);
   });
-  updateProgress();
 }
 
+// ===== VIEWS =====
 function goHome() {
-  state.currentId = null;
-  document.getElementById("main").innerHTML = renderWelcome();
-  renderSidebar();
+  state.view = "home"; state.currentId = null; state.currentWeek = null;
+  saveState(state); renderHome(); renderHeaderProgress();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-function renderWelcome() {
-  let html = `
-    <div class="welcome">
-      <div class="crumbs">A self-guided course in philosophy</div>
-      <h2>How to Think About Being Alive</h2>
-      <div class="lede">A four-week course shaped around the passages you highlighted. Nineteen chapters. Brief quizzes to make ideas stick. Journal prompts to test ideas against your life. Everything saves locally to your browser.</div>
-  `;
-  COURSE.forEach(w => {
-    const done = w.chapters.filter(c => state.completed[c.id]).length;
-    html += `
-      <div class="week-card" onclick="state.openWeek=${w.week};saveState(state);loadChapter('${w.chapters[0].id}')">
-        <h3>Week ${w.week} — ${w.title}</h3>
-        <p>${w.blurb}</p>
-        <p style="margin-top:10px;font-size:13px;color:var(--accent);">${done} / ${w.chapters.length} complete · Start with ${w.chapters[0].id} ${w.chapters[0].title}</p>
-      </div>
-    `;
-  });
-  html += `<div class="footer-note">Progress saves locally. Open this file on the same browser to resume any time.</div></div>`;
-  return html;
+function loadWeek(num) {
+  state.view = "week"; state.currentWeek = num; state.currentId = null;
+  saveState(state); renderWeek(num); renderHeaderProgress();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-function findChapter(id) {
-  for (const w of COURSE) for (const c of w.chapters) if (c.id === id) return { week: w, chapter: c };
-  return null;
-}
-function nextChapter(id) {
-  const all = COURSE.flatMap(w => w.chapters.map(c => ({...c, _week: w.week})));
-  const i = all.findIndex(c => c.id === id);
-  return (i >= 0 && i < all.length - 1) ? all[i + 1] : null;
-}
-function prevChapter(id) {
-  const all = COURSE.flatMap(w => w.chapters.map(c => ({...c, _week: w.week})));
-  const i = all.findIndex(c => c.id === id);
-  return (i > 0) ? all[i - 1] : null;
-}
-
 function loadChapter(id) {
-  state.currentId = id;
-  state.openWeek = findChapter(id).week.week;
-  saveState(state);
+  state.view = "chapter"; state.currentId = id; state.currentWeek = findWeekOf(id).week;
+  saveState(state); renderChapter(id); renderHeaderProgress();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderHome() {
+  let html = `
+    <section class="hero view">
+      <div class="eyebrow">A self-guided course in philosophy</div>
+      <h1>How to think about <em>being</em> alive.</h1>
+      <p class="lede">Eighteen chapters across four weeks, shaped around the passages you highlighted. Brief quizzes to make ideas stick. Journal prompts to test ideas against your life. Everything saves locally.</p>
+      <div class="hero-side">${ILLOS.seated(180)}</div>
+    </section>
+    <section class="weeks-grid view">`;
+  COURSE.forEach(w => {
+    const done = weekCompletedCount(w);
+    const total = w.chapters.length;
+    const cardCls = "week-card " + (w.cardStyle === "alt" ? "alt" : w.cardStyle === "blue" ? "blue" : "");
+    const weekWords = ["one", "two", "three", "four"];
+    html += `
+      <article class="${cardCls}" onclick="loadWeek(${w.week})">
+        <div class="illo">${ILLOS[w.illo](84)}</div>
+        <div class="wc-number">Week ${weekWords[w.week-1]}</div>
+        <h3>${w.title}</h3>
+        <p class="wc-blurb">${w.blurb}</p>
+        <div class="wc-progress">${done} / ${total} chapters · ${done === total ? "Complete" : done === 0 ? "Begin" : "Continue"}</div>
+      </article>`;
+  });
+  html += `</section>
+    <section class="closing-strip view">
+      <div class="eyebrow">A closing thought</div>
+      <p>"The philosopher's ultimate tool is not a system. It is a question held with enough patience that it begins to answer itself."</p>
+    </section>`;
+  document.getElementById("main").innerHTML = html;
+}
+
+function renderWeek(num) {
+  const w = COURSE.find(x => x.week === num);
+  if (!w) { goHome(); return; }
+  const done = weekCompletedCount(w);
+  const weekWords = ["one", "two", "three", "four"];
+  let html = `
+    <a class="back-link" onclick="goHome()">← Course home</a>
+    <section class="week-hero view">
+      <div>
+        <div class="eyebrow blue">Week ${weekWords[w.week-1]} · ${done}/${w.chapters.length}</div>
+        <h2>${w.title}</h2>
+        <p class="blurb">${w.blurb}</p>
+      </div>
+      <div class="illo-wrap">${ILLOS[w.illo](200)}</div>
+    </section>
+    <section class="chapters-list view">`;
+  w.chapters.forEach(c => {
+    const isDone = !!state.completed[c.id];
+    html += `
+      <article class="chapter-row ${isDone ? "done" : ""}" onclick="loadChapter('${c.id}')">
+        <div class="cr-num">${c.id}</div>
+        <div class="cr-body">
+          <h4>${c.title}</h4>
+          <p>${c.sub}</p>
+        </div>
+        <div class="cr-status"><div class="dot"></div></div>
+      </article>`;
+  });
+  html += `</section>`;
+  document.getElementById("main").innerHTML = html;
+}
+
+function renderChapter(id) {
   const { week, chapter } = findChapter(id);
   const journalKey = "j_" + id;
   const journalText = state.journals[journalKey] || "";
@@ -842,99 +1035,94 @@ function loadChapter(id) {
       if (i === chapter.quiz.correct) cls += " correct";
       else if (i === quizPick) cls += " incorrect";
     } else if (state.tempPick === i) cls += " selected";
-    return `<div class="${cls}" data-i="${i}" onclick="pickOpt('${id}', ${i})">${o}</div>`;
+    const disabled = quizPick !== undefined ? "data-disabled" : "";
+    return `<div class="${cls}" data-i="${i}" ${disabled} onclick="pickOpt('${id}', ${i})">${o}</div>`;
   }).join("");
 
   let feedbackHtml = "";
   if (quizPick !== undefined) {
     const correct = quizPick === chapter.quiz.correct;
-    feedbackHtml = `<div class="feedback show ${correct ? "ok" : "no"}">${correct ? "Correct. " : "Not quite. "}${chapter.quiz.why}</div>`;
+    feedbackHtml = `<div class="feedback show ${correct ? "ok" : "no"}"><strong>${correct ? "Correct. " : "Not quite. "}</strong>${chapter.quiz.why}</div>`;
   }
 
-  document.getElementById("main").innerHTML = `
-    <div class="crumbs">Week ${week.week} · Chapter ${chapter.id}</div>
-    <h2 class="ch-title">${chapter.title}</h2>
-    <div class="ch-sub">${chapter.sub}</div>
-    <div class="flagged">${chapter.flagged}</div>
-    <div class="content">${chapter.body}</div>
-
-    <div class="card">
-      <h4>Quick check</h4>
-      <div class="q">${chapter.quiz.q}</div>
-      ${optsHtml}
-      ${feedbackHtml}
-      ${quizPick === undefined ? `<div style="margin-top:14px;"><button class="btn primary" onclick="submitQuiz('${id}')">Check answer</button></div>` : ""}
+  let html = `
+    <div class="crumbs">
+      <a onclick="goHome()">Home</a><span class="sep">/</span>
+      <a onclick="loadWeek(${week.week})">Week ${week.week}</a><span class="sep">/</span>
+      <span>Chapter ${chapter.id}</span>
     </div>
-
-    <div class="card journal">
-      <h4>Journal prompt</h4>
-      <div class="q">${chapter.journal}</div>
-      <textarea id="journal-${id}" placeholder="Write freely. Saves automatically.">${journalText}</textarea>
-      <div class="save-row"><span id="save-status-${id}">Saved automatically as you type.</span></div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn" ${prev ? "" : "disabled"} onclick="${prev ? "loadChapter('"+prev.id+"')" : ""}">← ${prev ? "Previous" : "Start"}</button>
-      <button class="btn ${isDone ? "" : "primary"}" onclick="toggleDone('${id}')">${isDone ? "Marked complete ✓" : "Mark complete"}</button>
-      <button class="btn" ${next ? "" : "disabled"} onclick="${next ? "loadChapter('"+next.id+"')" : ""}">${next ? "Next" : "Finish"} →</button>
-    </div>
-  `;
+    <section class="ch-hero view">
+      <h1>${chapter.title}</h1>
+      <p class="ch-sub">${chapter.sub}</p>
+    </section>
+    <div class="container-narrow view">
+      <div class="flagged">${chapter.flagged}</div>
+      <div class="content">${chapter.body}</div>
+      <div class="card">
+        <div class="card-head"><span class="card-eyebrow">Quick check</span><span class="card-line"></span></div>
+        <div class="q">${chapter.quiz.q}</div>
+        ${optsHtml}
+        ${feedbackHtml}
+        ${quizPick === undefined ? `<div style="margin-top:18px;"><button class="btn primary" onclick="submitQuiz('${id}')">Check answer</button></div>` : ""}
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-eyebrow">Journal prompt</span><span class="card-line"></span></div>
+        <div class="q">${chapter.journal}</div>
+        <textarea class="journal-input" id="journal-${id}" placeholder="Write freely. Saves automatically.">${journalText}</textarea>
+        <div class="save-row" id="save-status-${id}">Saved automatically as you type.</div>
+      </div>
+      <div style="text-align:center; margin: 40px 0;">
+        <button class="btn ${isDone ? "" : "primary"}" onclick="toggleDone('${id}')">${isDone ? "✓ Marked complete" : "Mark chapter complete"}</button>
+      </div>
+      <nav class="nav-row">
+        <div>${prev ? `<a class="nav-link" onclick="loadChapter('${prev.id}')"><span class="nl-eyebrow">← Previous</span><span class="nl-title">${prev.id} · ${prev.title}</span></a>` : `<a class="nav-link" onclick="goHome()"><span class="nl-eyebrow">← Back</span><span class="nl-title">Course home</span></a>`}</div>
+        <div>${next ? `<a class="nav-link right-align" onclick="loadChapter('${next.id}')"><span class="nl-eyebrow">Next →</span><span class="nl-title">${next.id} · ${next.title}</span></a>` : `<a class="nav-link right-align" onclick="goHome()"><span class="nl-eyebrow">Finish →</span><span class="nl-title">Return home</span></a>`}</div>
+      </nav>
+    </div>`;
+  document.getElementById("main").innerHTML = html;
 
   const ta = document.getElementById("journal-" + id);
   if (ta) {
     let timer;
     ta.addEventListener("input", () => {
       state.journals[journalKey] = ta.value;
-      document.getElementById("save-status-" + id).textContent = "Saving…";
+      const statusEl = document.getElementById("save-status-" + id);
+      if (statusEl) statusEl.textContent = "Saving…";
       clearTimeout(timer);
       timer = setTimeout(() => {
         saveState(state);
-        document.getElementById("save-status-" + id).textContent = "Saved.";
-        setTimeout(() => {
-          const el = document.getElementById("save-status-" + id);
-          if (el) el.textContent = "Saved automatically as you type.";
-        }, 1200);
+        if (statusEl) {
+          statusEl.textContent = "Saved.";
+          setTimeout(() => { if (statusEl) statusEl.textContent = "Saved automatically as you type."; }, 1400);
+        }
       }, 350);
     });
   }
-
-  renderSidebar();
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function pickOpt(id, i) {
-  // Only allow selection if not already submitted
   if (state.quizPicks[id] !== undefined) return;
   state.tempPick = i;
-  document.querySelectorAll(".opt").forEach((el, idx) => {
+  document.querySelectorAll(".opt").forEach((el) => {
     el.classList.toggle("selected", parseInt(el.dataset.i) === i);
   });
 }
 function submitQuiz(id) {
-  if (state.tempPick === undefined) {
-    alert("Pick an answer first.");
-    return;
-  }
+  if (state.tempPick === undefined) { alert("Pick an answer first."); return; }
   state.quizPicks[id] = state.tempPick;
   delete state.tempPick;
-  saveState(state);
-  loadChapter(id);
+  saveState(state); renderChapter(id); renderHeaderProgress();
 }
 function toggleDone(id) {
   state.completed[id] = !state.completed[id];
-  saveState(state);
-  loadChapter(id);
+  saveState(state); renderChapter(id); renderHeaderProgress();
 }
 
-// =========================================================
-//  Init
-// =========================================================
-renderSidebar();
-if (state.currentId && findChapter(state.currentId)) {
-  loadChapter(state.currentId);
-} else {
-  goHome();
-}
+// ===== INIT =====
+renderHeaderProgress();
+if (state.view === "chapter" && state.currentId && findChapter(state.currentId)) renderChapter(state.currentId);
+else if (state.view === "week" && state.currentWeek) renderWeek(state.currentWeek);
+else renderHome();
 </script>
 </body>
 </html>
