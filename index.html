@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to Think About Being Alive — A 4-Week Course</title>
+<style>
+  :root {
+    --paper: #f6f1e7;
+    --paper-2: #efe6d4;
+    --ink: #2a2622;
+    --ink-soft: #5a5249;
+    --accent: #7a4f2c;
+    --accent-2: #a8642f;
+    --line: #d8cdb6;
+    --highlight: #fff1a8;
+    --highlight-pink: #f4d6dd;
+    --good: #4a7a4a;
+    --bad: #a44a4a;
+    --radius: 14px;
+    --shadow: 0 6px 28px rgba(80, 60, 30, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .app { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+
+  /* Sidebar */
+  aside {
+    background: var(--paper-2);
+    border-right: 1px solid var(--line);
+    padding: 28px 22px 80px;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  aside h1 {
+    font-family: "Iowan Old Style", Georgia, serif;
+    font-size: 20px; line-height: 1.25; margin: 0 0 4px;
+    color: var(--ink);
+  }
+  aside .sub { font-size: 13px; color: var(--ink-soft); font-style: italic; margin-bottom: 22px; }
+  .progress-wrap { margin-bottom: 22px; }
+  .progress-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+  .progress-bar { height: 6px; background: #e2d6bc; border-radius: 4px; overflow: hidden; }
+  .progress-bar > div { height: 100%; background: var(--accent); width: 0%; transition: width .35s ease; }
+  .week {
+    margin-bottom: 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(255, 250, 240, .55);
+    overflow: hidden;
+  }
+  .week-head {
+    padding: 10px 12px; cursor: pointer;
+    display: flex; align-items: baseline; justify-content: space-between;
+    background: rgba(255, 245, 220, .55);
+  }
+  .week-head .wk-title { font-weight: 700; font-size: 14px; }
+  .week-head .wk-meta { font-size: 11px; color: var(--ink-soft); }
+  .week-body { display: none; padding: 6px 8px 10px; }
+  .week.open .week-body { display: block; }
+  .ch-link {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 9px; border-radius: 8px;
+    cursor: pointer; font-size: 13.5px; color: var(--ink);
+    text-decoration: none;
+  }
+  .ch-link:hover { background: rgba(160, 100, 50, .08); }
+  .ch-link.active { background: rgba(122, 79, 44, .12); font-weight: 600; }
+  .ch-dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--accent); flex-shrink: 0; }
+  .ch-link.done .ch-dot { background: var(--accent); }
+
+  /* Main */
+  main { padding: 56px 64px 120px; max-width: 820px; }
+  .crumbs { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 10px; }
+  h2.ch-title { font-size: 32px; line-height: 1.2; margin: 0 0 8px; color: var(--ink); font-weight: 700; }
+  .ch-sub { font-size: 16px; color: var(--ink-soft); font-style: italic; margin-bottom: 28px; }
+  .flagged {
+    background: #fff8d8;
+    border-left: 4px solid var(--accent-2);
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 0 0 28px;
+    font-size: 15px;
+    color: #4a3a26;
+  }
+  .flagged strong { color: var(--accent); }
+  .content p { margin: 0 0 16px; font-size: 17px; }
+  .content h3 { font-size: 19px; margin: 28px 0 8px; color: var(--accent); }
+  .content em.term { background: var(--highlight); padding: 0 3px; border-radius: 3px; font-style: normal; }
+  .content blockquote {
+    margin: 18px 0; padding: 8px 18px;
+    border-left: 3px solid var(--accent);
+    color: var(--ink-soft); font-style: italic;
+  }
+
+  /* Quiz */
+  .card {
+    background: rgba(255, 250, 240, .8);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin: 36px 0;
+    box-shadow: var(--shadow);
+  }
+  .card h4 {
+    font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 6px;
+  }
+  .card .q { font-size: 17px; margin: 4px 0 14px; }
+  .opt {
+    display: block; padding: 10px 14px; margin: 6px 0;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--paper); cursor: pointer;
+    transition: all .15s ease;
+    font-size: 15.5px;
+  }
+  .opt:hover { background: rgba(168, 100, 47, .07); }
+  .opt.selected { border-color: var(--accent); background: rgba(168, 100, 47, .1); }
+  .opt.correct { border-color: var(--good); background: #e9f1e3; }
+  .opt.incorrect { border-color: var(--bad); background: #f3e3e3; }
+  .feedback {
+    margin-top: 12px; padding: 12px 14px; border-radius: 8px;
+    font-size: 14.5px; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #e9f1e3; color: #2d4a2d; }
+  .feedback.no { background: #f3e3e3; color: #5a2a2a; }
+
+  /* Journal */
+  .journal textarea {
+    width: 100%; min-height: 140px; margin-top: 8px;
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px; font: inherit; font-size: 15.5px;
+    background: #fdfaf3; color: var(--ink); resize: vertical;
+  }
+  .journal textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .save-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: 13px; color: var(--ink-soft); }
+
+  /* Nav buttons */
+  .nav-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; }
+  button.btn {
+    font: inherit; cursor: pointer;
+    padding: 10px 18px; border-radius: 999px;
+    border: 1px solid var(--accent); background: var(--paper);
+    color: var(--accent); font-size: 14.5px; font-weight: 600;
+    transition: all .15s ease;
+  }
+  button.btn:hover { background: var(--accent); color: var(--paper); }
+  button.btn.primary { background: var(--accent); color: var(--paper); }
+  button.btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); }
+  button.btn:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* Welcome */
+  .welcome { padding: 24px 0; }
+  .welcome h2 { font-size: 36px; margin: 0 0 8px; }
+  .welcome .lede { font-size: 18px; font-style: italic; color: var(--ink-soft); margin-bottom: 28px; max-width: 580px; }
+  .week-card {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px 26px; margin: 14px 0;
+    background: rgba(255, 250, 240, .65);
+    cursor: pointer; transition: all .15s ease;
+  }
+  .week-card:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+  .week-card h3 { margin: 0 0 4px; font-size: 19px; color: var(--accent); }
+  .week-card p { margin: 0; color: var(--ink-soft); font-size: 14.5px; }
+
+  /* Misc */
+  .footer-note { font-size: 12.5px; color: var(--ink-soft); margin-top: 40px; font-style: italic; text-align: center; }
+  @media (max-width: 820px) {
+    .app { grid-template-columns: 1fr; }
+    aside { position: relative; height: auto; }
+    main { padding: 28px 22px 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <h1>How to Think About Being Alive</h1>
+    <div class="sub">A self-guided 4-week course in philosophy</div>
+    <div class="progress-wrap">
+      <div class="progress-label">Your progress</div>
+      <div class="progress-bar"><div id="progress-fill"></div></div>
+      <div id="progress-text" style="font-size:12px;color:var(--ink-soft);margin-top:6px;"></div>
+    </div>
+    <a class="ch-link" id="home-link" onclick="goHome()"><span class="ch-dot" style="border-color:var(--ink-soft);background:transparent"></span>Course home</a>
+    <div id="weeks"></div>
+  </aside>
+  <main id="main"></main>
+</div>
+
+<script>
+// =========================================================
+//  Course data — content keyed to the user's highlights & comments
+// =========================================================
+const COURSE = [
+  {
+    week: 1,
+    title: "Foundations & The Self You're Authoring",
+    blurb: "What philosophy actually is, how you know what you know, the freedom question, and meaning as something you make rather than find.",
+    chapters: [
+      {
+        id: "1.1",
+        title: "Why philosophy is asking, not answering",
+        sub: "The five branches, and why ethics + metaphysics carry the most weight for daily life.",
+        flagged: "You highlighted: <em>\"the disciplined practice of asking hard questions and following them wherever they lead.\"</em> This chapter sits with the orientation behind that line — that philosophy is a posture, not a body of facts.",
+        body: `
+          <p>Philosophy comes from <em class="term">philos</em> (love) + <em class="term">sophia</em> (wisdom). A philosopher is not someone who has solved life. A philosopher is someone who has learned to sit with the unsolvable without panicking — which turns out to be a transferable skill.</p>
+          <p>The discipline has five branches: <strong>metaphysics</strong> (what is real), <strong>epistemology</strong> (what can be known), <strong>ethics</strong> (how to live), <strong>logic</strong> (how to reason well), and <strong>aesthetics</strong> (what beauty is and what taste reveals). You already ask each of these informally. The discipline just refuses to let you drop the question.</p>
+          <h3>What this implies for how you read the rest of the course</h3>
+          <p>Treat every framework you meet as a tool, not a verdict. The point is not to choose a "side" — it is to learn how to think well enough that, when life requires it, you have language and structure for the choices you are already making.</p>
+        `,
+        quiz: {
+          q: "Which two branches does the original document say carry the most weight for building a personal worldview?",
+          opts: ["Logic and aesthetics", "Ethics and metaphysics", "Epistemology and logic", "Metaphysics and aesthetics"],
+          correct: 1,
+          why: "Ethics (how to live, what we owe each other) and metaphysics (what's real, what the self is) do most of the heavy lifting for an examined life."
+        },
+        journal: "Which of the five branches do you find yourself thinking about most often, without realizing it was philosophy? Where does that show up in your week?"
+      },
+      {
+        id: "1.2",
+        title: "Epistemology — how do you know what you know?",
+        sub: "Your first flagged comment was \"Look more into this.\" Here it is.",
+        flagged: "You marked epistemology with <strong>\"Look more into this.\"</strong> The branch matters because it quietly governs how confident you let yourself be about anything.",
+        body: `
+          <p>Epistemology asks: what is the difference between believing something and knowing it? The classical answer is that <em class="term">knowledge</em> is justified true belief. You believe it, it happens to be true, and you have a reason for believing it. Strip away any of the three legs and you have something less.</p>
+          <h3>Three distinctions worth carrying</h3>
+          <p><strong>Belief vs. knowledge.</strong> A belief becomes knowledge only when it is both true and justified — luck doesn't count. If you happen to guess the right answer, you didn't "know" it.</p>
+          <p><strong>Justification vs. truth.</strong> You can be justified in believing something that turns out to be false. Everyone before Galileo was justified in thinking the sun orbited the earth — the evidence available pointed that way. This is humbling: being careful does not guarantee being right.</p>
+          <p><strong>Foundationalism vs. coherentism.</strong> Do beliefs rest on a base of self-evident truths (foundationalism), or do they hang together as a self-supporting web (coherentism)? Most people switch between these depending on what they are arguing about.</p>
+          <h3>The skill underneath all of this</h3>
+          <p>Calibration. Holding beliefs with confidence proportional to evidence, and being willing to say "I don't know" without it feeling like a failure. Most intellectual mistakes are not lies — they're overconfidence.</p>
+        `,
+        quiz: {
+          q: "By the classical definition, when does a belief become knowledge?",
+          opts: [
+            "When most people agree with it",
+            "When it's both true and you have justification for it",
+            "When it can be proven mathematically",
+            "When it feels certain"
+          ],
+          correct: 1,
+          why: "Knowledge = justified true belief. You can have a true belief by luck, or a justified false belief — neither counts as knowledge."
+        },
+        journal: "What's something you've been very confident about that turned out to be wrong? What kind of evidence would have helped you calibrate sooner?"
+      },
+      {
+        id: "1.3",
+        title: "Free will & responsibility",
+        sub: "The question that quietly governs how you blame, forgive, and forgive yourself.",
+        flagged: "You highlighted: <em>\"governs how you assign blame, how you forgive, and how much responsibility you feel for your own life.\"</em> Worth examining the position you didn't know you had.",
+        body: `
+          <p>If your choices are produced by genes, upbringing, neurochemistry, and circumstance — none of which you chose — what does it mean to hold yourself responsible? Three camps, in increasing usefulness for daily life:</p>
+          <p><strong>Hard determinists</strong> say there is no free will. Every choice is the inevitable output of prior causes. This is intellectually defensible and emotionally unlivable.</p>
+          <p><strong>Libertarians</strong> (the metaphysical kind, not the political kind) say genuine, uncaused free will exists and is what makes moral responsibility possible. This is harder to defend with neuroscience.</p>
+          <p><strong>Compatibilists</strong> — the largest contemporary camp — argue that free will and determinism do not actually conflict. You are <em>free</em> when your actions flow from <em>your own</em> desires, values, and reasoning, even if those were themselves shaped by causes outside you. The "self" doing the choosing is built — but it is still you. This is the position that lets you take your life seriously without requiring belief in a magical uncaused homunculus.</p>
+          <h3>Why this is practical, not academic</h3>
+          <p>The position you hold (often without examining it) shapes whether you forgive yourself for past decisions made by an earlier, less-informed version of you — and whether you extend the same to other people. Most people would do well to be slightly more compatibilist about themselves than they currently are.</p>
+        `,
+        quiz: {
+          q: "The compatibilist position says:",
+          opts: [
+            "Free will doesn't exist — get over it.",
+            "Free will exists in a magical, uncaused way.",
+            "Free will and determinism are compatible — you're 'free' when actions flow from your own values, even if those were shaped by causes.",
+            "Whether you have free will depends on the day."
+          ],
+          correct: 2,
+          why: "Compatibilism redefines freedom as acting in line with your own desires and values, without needing those desires to be uncaused. It's the most livable of the three positions."
+        },
+        journal: "Recall a decision you've harshly judged yourself for. Knowing what shaped the version of you who made it, how would a compatibilist hold you to account — and where would they grant grace?"
+      },
+      {
+        id: "1.4",
+        title: "Meaning is made — living in the present and creating",
+        sub: "Your strongest comment in the doc was here.",
+        flagged: "Your comment: <strong>\"I think I think this. I don't want to always be searching. I want to live in the present and create my life content.\"</strong> This chapter takes that seriously.",
+        body: `
+          <p>The two camps on meaning produce radically different people. <strong>Discovered meaning</strong> says there is something out there to find — a purpose, a path, a calling — and your job is attunement. <strong>Made meaning</strong> says there is no external rubric; you are always the author.</p>
+          <p>If, like you, you lean toward made meaning, three implications follow that are worth holding consciously.</p>
+          <p><strong>1. Comparison is mostly a category error.</strong> There is no external rubric grading your life as successful or failed. The anxiety you absorb from comparing your life to other people's is built on a confusion: their composition is not your composition. You're not behind. You're elsewhere.</p>
+          <p><strong>2. Meaning is not a one-time discovery. It is an ongoing composition.</strong> You don't "find" your purpose at twenty-five and execute it for fifty years. You compose it, revise it, abandon parts that stopped being true, write new parts in. People who treat meaning as discovered are often disappointed at thirty-five; people who treat it as composed have something to do every day.</p>
+          <p><strong>3. Presentness is not avoidance — it is the work.</strong> The existentialists would say: living in the present and adding meaning to your life through what you are actually doing is not a distraction from "real" purpose. It is the only place real purpose ever happens. You compose the meaning by composing the day.</p>
+          <blockquote>The caution Sartre would add: the freedom to make meaning is heavier than it looks. Once you accept that meaning is your project, you cannot outsource the responsibility for your life to family, religion, employer, or zeitgeist. You can use those things as material. But the composition is yours. That is what they called authenticity.</blockquote>
+        `,
+        quiz: {
+          q: "For the existentialists, what is the relationship between living in the present and finding meaning?",
+          opts: [
+            "Living in the present is a distraction from finding real meaning.",
+            "Meaning exists eternally and the present is the moment you discover it.",
+            "Meaning is composed in the present — there is no pre-existing meaning to find.",
+            "The present doesn't matter; what matters is your legacy."
+          ],
+          correct: 2,
+          why: "Existence precedes essence. There is no pre-formed meaning waiting to be discovered. Meaning is added to the world through the choices and acts of present-tense humans."
+        },
+        journal: "If you fully accepted that you are the author of your life's meaning — not its discoverer — what's one thing you'd stop waiting for permission on?"
+      },
+      {
+        id: "1.5",
+        title: "The self as process",
+        sub: "Buddhist anatta and Parfit's psychological continuity.",
+        flagged: "You highlighted: <em>\"a process rather than a thing.\"</em> A small phrase with very large consequences for identity and change.",
+        body: `
+          <p>The Buddhist concept of <em class="term">anatta</em> — non-self — does not deny that there is something there. Clearly there is experience, preference, behavior. It denies that any of those things is a fixed essence. The "self" is more like a verb than a noun: a continuous <em>selfing</em>, made of momentary thoughts, sensations, and intentions that arise and pass.</p>
+          <h3>Two practical payoffs</h3>
+          <p><strong>You are allowed to change.</strong> Radically, repeatedly. Without owing anyone consistency with a younger version of you that no longer exists. The pressure to "stay true to who you've always been" assumes a who that doesn't exist in the way the sentence implies.</p>
+          <p><strong>You are not your worst moments.</strong> They were states the system passed through — not the system itself. This is not an excuse; it is an accurate description of how identity actually works over time.</p>
+          <h3>The Western echo: Derek Parfit</h3>
+          <p>Parfit argued that personal identity over time is a matter of <em>psychological continuity</em>, not metaphysical sameness. Your relationship to "future you" is more like your relationship to a close relative than to an identical twin. This sounds abstract but has surprising consequences: it makes long-term decisions feel less coercive (you are not being held hostage by a future stranger) and it makes self-forgiveness feel less like denial.</p>
+        `,
+        quiz: {
+          q: "If the self is a process rather than a fixed thing, which of these is the better framing?",
+          opts: [
+            "I am betraying who I am if I change.",
+            "I owe my future self total continuity with my past self.",
+            "I am the same person I was at five; I'm just hiding it.",
+            "Selfing is ongoing — I am allowed to revise."
+          ],
+          correct: 3,
+          why: "The self is not a noun being preserved — it's a verb being lived. Revision is not betrayal; it's the nature of the process."
+        },
+        journal: "What part of your identity have you held onto longer than it has held onto you? What would it cost to let it go?"
+      }
+    ]
+  },
+  {
+    week: 2,
+    title: "Frameworks for Living",
+    blurb: "Five lenses for daily life — Stoicism, existentialism, utilitarianism (and its politics), Kant on intent vs impact, and virtue ethics' pursuit of flourishing.",
+    chapters: [
+      {
+        id: "2.1",
+        title: "Stoicism — regulation without suppression",
+        sub: "Emotional regulation before that phrase existed.",
+        flagged: "You highlighted: <em>\"philosophy of emotional regulation before that phrase existed\"</em> and the warning that <em>\"taken to extremes, it can flatten the importance of genuine loss.\"</em> Both are true; this chapter holds them together.",
+        body: `
+          <p>Stoicism (Epictetus, Marcus Aurelius, Seneca) teaches the rigorous distinction between what is and is not in your control. External events — others' behavior, outcomes, fortune — are not yours to command. Your judgments, reactions, and effort: these are. Daily life mostly is the question of where you put your emotional energy.</p>
+          <h3>Three practices that translate cleanly</h3>
+          <p><strong>The dichotomy of control.</strong> At the start of each day, sort what's yours (your effort, attention, response) from what isn't (other people's choices, outcomes, weather). Invest emotional energy only in the first column.</p>
+          <p><strong>Negative visualization</strong> (<em class="term">premeditatio malorum</em>). Briefly imagine losing what you value — not to be morbid, but to interrupt the hedonic treadmill that takes loved ones, health, comfort for granted. You return to your actual life with new eyes.</p>
+          <p><strong>The view from above.</strong> When something feels enormous, picture yourself zooming out: the room, the city, the planet, the century. Most of what consumes a Tuesday afternoon does not survive the zoom.</p>
+          <h3>How Stoicism becomes harmful</h3>
+          <p>When it slides into emotional suppression masquerading as wisdom. Marcus Aurelius wept openly in his journals. Real Stoicism is about not being <em>ruled</em> by emotion — not pretending you don't have any. If a Stoic practice is helping you bypass grief or anger that needs to be felt, you are using the wrong tool.</p>
+        `,
+        quiz: {
+          q: "Which is the misuse of Stoicism — the failure mode to watch for?",
+          opts: [
+            "Using the dichotomy of control to focus your effort",
+            "Practicing negative visualization to interrupt the hedonic treadmill",
+            "Suppressing emotions you ought to feel, in the name of being 'unbothered'",
+            "Taking the view from above when a problem feels enormous"
+          ],
+          correct: 2,
+          why: "Stoicism is about not being ruled by emotion, not about pretending you don't have any. Using it to bypass grief that needs feeling is the failure mode."
+        },
+        journal: "Make today's dichotomy-of-control list. Two columns: what's mine to do, what's not. Where have you been investing energy in the wrong column lately?"
+      },
+      {
+        id: "2.2",
+        title: "Existentialism — the four voices",
+        sub: "Sartre the rigorous, Camus the warm, de Beauvoir the relational, Kierkegaard the original.",
+        flagged: "You highlighted nearly every line of this section in the original doc, including <em>\"existence precedes essence\"</em> and <em>\"the project of your life is to create yourself through your choices.\"</em>",
+        body: `
+          <p>The existentialists agree on one thing: <em>existence precedes essence</em>. You arrive without a fixed nature or predetermined purpose. The project of your life is to create yourself through your choices. They disagree, productively, about what that means.</p>
+          <h3>Sartre — the rigorous one</h3>
+          <p>Every choice is a vote for what a human being should be, which is why even small choices have moral weight. His worst fear: <em class="term">bad faith</em> — pretending you didn't have a choice when you did, hiding behind roles ("I'm just a manager," "I'm just being practical") to avoid the responsibility of authorship.</p>
+          <h3>Camus — the warm one</h3>
+          <p>He agrees the universe has no built-in meaning, but rather than treating this as tragedy he treats it as the setup for joyful defiance. His Sisyphus — condemned to roll a boulder forever — is happy because he <em>owns</em> the rolling. Camus is the existentialist for people who want to live, not just analyze living.</p>
+          <h3>Simone de Beauvoir — the relational one</h3>
+          <p>Authentic freedom is not solitary. Your freedom is bound up with everyone else's, and any project of self-creation that ignores how it limits or enables others is incomplete. This is the existentialism that survives contact with relationships.</p>
+          <h3>Kierkegaard — the original</h3>
+          <p>The godfather of the tradition framed the whole thing as a question of how to live with the dizziness of possibility — the "anxiety of freedom." His answer was a leap of faith that need not be religious but must be committed. Indecision is itself a decision, and the worst one.</p>
+          <blockquote>Stop waiting for life to have meaning, and start adding it.</blockquote>
+        `,
+        quiz: {
+          q: "Sartre's notion of \"bad faith\" describes:",
+          opts: [
+            "Choosing to do something morally bad",
+            "Losing your religious faith",
+            "Pretending you had no choice when you did — hiding behind a role to avoid responsibility",
+            "Disagreeing with another existentialist"
+          ],
+          correct: 2,
+          why: "Bad faith is the lie we tell ourselves to escape the burden of freedom — denying that a choice was a choice."
+        },
+        journal: "Where in your current life are you in bad faith — telling yourself you had no choice when, on inspection, you did? What does it feel like to name it?"
+      },
+      {
+        id: "2.3",
+        title: "Utilitarianism & democratic socialism",
+        sub: "You asked exactly this question.",
+        flagged: "Your comment: <strong>\"learn more about this and how this ties to democratic socialism vs other political ideals.\"</strong> Here's the connection, with the standard critiques.",
+        body: `
+          <p>Utilitarianism (Bentham, Mill) says the right choice is the one that produces the greatest good for the greatest number. It is clean, measurable, democratic. It is also the moral grammar underneath most modern progressive policy.</p>
+          <h3>Why utilitarianism leans social-democratic</h3>
+          <p>Two empirical claims do the heavy lifting. <strong>Diminishing marginal utility:</strong> an extra dollar means much more to a poor person than a rich one — so redistributing some wealth produces more aggregate welfare than concentrating it. <strong>Market under-production:</strong> goods like health, education, and security are systematically under-supplied by markets alone, because their benefits spill over to people who didn't pay. Universal healthcare, progressive taxation, public goods, harm-reduction policy — these all sit on a utilitarian foundation.</p>
+          <h3>Rawls and the veil of ignorance</h3>
+          <p>John Rawls is not strictly a utilitarian, but he sharpened the same intuition with a powerful thought experiment. Imagine you had to design a society without knowing which position you'd occupy in it — race, gender, wealth, talent, parents, all unknown. Most people, reasoning behind that veil, choose something much closer to social democracy than to pure libertarianism. They want robust floors because they might land on one.</p>
+          <h3>Peter Singer and personal ethics</h3>
+          <p>Singer pushes utilitarianism into personal life: if you can prevent serious suffering at modest cost to yourself, you are <em>obligated</em> to. This is the foundation of effective altruism — choose the giving (or career, or political action) that produces the most welfare per unit of resource.</p>
+          <h3>What utilitarianism never escapes</h3>
+          <p>The objection that aggregating welfare can in principle justify violating individuals — torturing one to save five, sacrificing a minority for a majority's gain. Most people recoil from this in practice even when they accept the math in theory. That recoil is what motivates Kant, in the next chapter.</p>
+        `,
+        quiz: {
+          q: "Which empirical claim is doing real work in the utilitarian case for redistribution?",
+          opts: [
+            "Money is the root of all evil.",
+            "The free market always fails.",
+            "Money produces diminishing marginal utility — a dollar matters more to a poor person than a rich one.",
+            "All people are equally talented."
+          ],
+          correct: 2,
+          why: "Diminishing marginal utility is the lever: if a dollar produces more welfare in the hands of the poor than the rich, redistribution increases aggregate welfare."
+        },
+        journal: "Behind Rawls's veil of ignorance — not knowing what life you'd be born into — which two or three social arrangements would you most insist on? What does that tell you about the politics you already hold?"
+      },
+      {
+        id: "2.4",
+        title: "Kant — intent, impact, and the dignity floor",
+        sub: "Answering your question directly.",
+        flagged: "Your comment: <strong>\"Is this like the intent matters more than impact? Isn't that similar to utilitarianism greatest amount of good?\"</strong> Close, but worth sharpening. Here's the difference.",
+        body: `
+          <p>Your instinct is half right. Kant cares about the <em class="term">maxim</em> of your action — the principle you are acting on — because that's the part you actually control. But Kant's "intent" is not what you happened to feel. It is whether your reasoning, made universal, holds up.</p>
+          <h3>The categorical imperative, in two versions</h3>
+          <p><strong>Universalizability.</strong> Could you will that <em>everyone</em> act on the principle you're about to act on? Could you will that everyone lie when it's convenient? Then lying fails the test, regardless of consequences.</p>
+          <p><strong>Humanity as ends, never merely means.</strong> Are you treating other people as full subjects, not just as tools? You can use someone's labor (means) without using <em>them</em> (merely means) — the distinction is whether you respect their agency.</p>
+          <h3>So how is Kant different from utilitarianism?</h3>
+          <p>Utilitarianism judges only outcomes. The same action could be right on Monday and wrong on Tuesday, depending on what it produced. Kant judges the principle, regardless of outcome. The two often <em>converge</em> in practice — lying is usually bad in both systems, because it produces bad outcomes and also fails universalization. They diverge at the edges.</p>
+          <h3>The split case that exposes the difference</h3>
+          <p>Would you sacrifice one person to save five? Utilitarianism (in principle) says yes — five units of life saved beats one. Kant says no — using that one person purely as a means to others' ends violates their dignity, no matter the math. The deepest difference is metaphysical: Kant believes there are some things you cannot do to people no matter how much good follows.</p>
+          <h3>Where thoughtful people land</h3>
+          <p>Most end up some hybrid: utilitarian in policy design (aggregate welfare matters; tradeoffs are real) and more Kantian in personal ethics (there is a dignity floor below which I will not go, even for good outcomes). It's not a clean system, but it's how most moral lives actually run.</p>
+        `,
+        quiz: {
+          q: "Where do Kant and utilitarianism most clearly part ways?",
+          opts: [
+            "Whether lying is wrong in everyday life",
+            "Whether kindness matters",
+            "Whether you can sacrifice one person to save five — Kant says no, utilitarianism (in principle) says yes",
+            "Whether morality is about being happy"
+          ],
+          correct: 2,
+          why: "They converge in everyday cases. The split is at the edges — utilitarianism allows the trade in principle; Kant forbids using a person merely as a means, no matter the math."
+        },
+        journal: "When have you held a 'dignity floor' in your own life — a thing you wouldn't do even though the calculation said it would produce more good? What does that floor tell you about your real values?"
+      },
+      {
+        id: "2.5",
+        title: "Virtue ethics & eudaimonia",
+        sub: "Flourishing, not happiness.",
+        flagged: "You highlighted <em>\"eudaimonia: flourishing, not merely happiness\"</em> and Aristotle's claim that virtues require a community. Both are core to this chapter.",
+        body: `
+          <p>Virtue ethics (Aristotle, MacIntyre) shifts the question from "what should I do?" to "what kind of person should I be?" The moral life is the cultivation of character — courage, honesty, generosity, practical wisdom — and the pursuit of <em class="term">eudaimonia</em>: flourishing.</p>
+          <h3>Why "happiness" mis-translates eudaimonia</h3>
+          <p>Modern happiness is a feeling. Eudaimonia is closer to "the kind of life a human being is at their best when living." A plant flourishes when it grows toward the sun and sets fruit. A person flourishes when they exercise reason, cultivate virtue, build genuine friendships, and contribute to their community.</p>
+          <p>The consequence is that eudaimonia is <em>objective</em> in a way modern happiness is not. You can be enjoying yourself and still not flourishing. You can be in difficult circumstances and flourishing nonetheless.</p>
+          <h3>Why community is non-negotiable for Aristotle</h3>
+          <p>Virtues are not abstract qualities you have alone in a room. They are dispositions that develop and get expressed in relationships — courage requires occasions for courage, honesty requires people to be honest with, generosity requires people to be generous toward. A virtuous life is structurally social. You cannot do it alone.</p>
+          <h3>The better question</h3>
+          <p>"Am I happy?" is the wrong question to organize your life around. The right one is: <em>am I becoming the person I want to be, in conditions that let that becoming happen?</em></p>
+        `,
+        quiz: {
+          q: "Which of the following is most consistent with eudaimonia, in Aristotle's sense?",
+          opts: [
+            "Feeling pleasure most of the time",
+            "Avoiding all difficulty",
+            "Becoming the fullest version of what a human being can be — exercising virtue in community over a whole life",
+            "Optimizing your day for maximum dopamine"
+          ],
+          correct: 2,
+          why: "Eudaimonia isn't a mood. It's the shape of a life lived at its full human capacity — virtue, friendship, contribution, reason."
+        },
+        journal: "Picture yourself five years from now, flourishing — not 'happy,' flourishing. What are you doing, who are you with, and which virtues are visible in how you live? What's one practice you could start this month that points there?"
+      }
+    ]
+  },
+  {
+    week: 3,
+    title: "Real Relationships",
+    blurb: "Aristotle's virtue friendships, Buber's I-Thou moments, care ethics, and Simone Weil on attention as the rarest form of generosity.",
+    chapters: [
+      {
+        id: "3.1",
+        title: "Aristotle's three friendships — and how virtue friendship is built",
+        sub: "The dataset is your besties.",
+        flagged: "Your comment: <strong>\"I want all friendships like this and my besties come to mind.\"</strong> Here's what Aristotle says makes that kind of friendship possible — and how to tell which of yours is which.",
+        body: `
+          <p>Aristotle distinguishes three types of friendship.</p>
+          <p><strong>Utility friendships</strong> — built on what you do for each other. The colleague you trade favors with. The neighbor you swap babysitting with. These are not lesser — they are the social infrastructure of a working life. They dissolve when the utility dissolves, and that's fine.</p>
+          <p><strong>Pleasure friendships</strong> — built on shared enjoyment. The friend you laugh with, the one who is fun at parties, the one whose company is delightful. Wonderful and necessary. They tend to last as long as the shared pleasure does.</p>
+          <p><strong>Virtue friendships</strong> — built on mutual admiration of the good in each other and commitment to each other's flourishing over time. Rare. Slow to form. Demanding. The deepest kind.</p>
+          <h3>How virtue friendship is actually built</h3>
+          <p><strong>Time.</strong> Aristotle says you cannot know whether someone is a virtue friend until you have "eaten salt together" — endured something. Years, not months. There are no shortcuts.</p>
+          <p><strong>Equality.</strong> Virtue friendship cannot be condescending or worshipful. The two people have to meet as peers, even if their lives look outwardly different.</p>
+          <p><strong>Shared activity that matters.</strong> Virtue friendship grows through doing things together that both of you care about — not proximity alone. Living near someone is not the same as building something with them.</p>
+          <p><strong>Mutual moral seriousness.</strong> Each person genuinely wants the other to become better, and is willing to say the hard thing when it serves that growth. These are the friends who tell you the truth when you describe a decision you're about to make — not what you want to hear.</p>
+          <h3>The audit</h3>
+          <p>How many of your relationships are which kind? Most of them will be utility or pleasure — that's healthy, not a failure. The question is whether you have at least a few in the third bucket, and whether you are tending them with the time, equality, shared activity, and seriousness they require.</p>
+        `,
+        quiz: {
+          q: "According to Aristotle, what's the single most consistent indicator of a virtue friendship?",
+          opts: [
+            "How often you text",
+            "How much fun you have together",
+            "How long you've known each other in calendar years",
+            "Mutual moral seriousness — each person committed to the other's becoming, willing to say the hard thing"
+          ],
+          correct: 3,
+          why: "Time matters, but proximity isn't friendship. The defining marker is whether both people are oriented toward each other's flourishing — and willing to act on that, even uncomfortably."
+        },
+        journal: "List your closest friendships. For each one, name which type it is right now — utility, pleasure, or virtue. No judgement; just clear sight. Then: which one would you most want to deepen, and what would deepening it actually require this season?"
+      },
+      {
+        id: "3.2",
+        title: "Buber's I-Thou — the moments that nourish",
+        sub: "You wanted to learn more about this. Here's the practical version.",
+        flagged: "Your comment: <strong>\"learn more about this.\"</strong> Buber's I-Thou is one of the most life-altering distinctions in modern philosophy when you internalize it.",
+        body: `
+          <p>Martin Buber described two orientations toward the world. <strong>I-It</strong>: we relate to others as objects — useful, categorizable, instrumental. <strong>I-Thou</strong>: we encounter another as a full subject, irreducible and present. Most interactions are I-It and have to be — you cannot have an I-Thou moment with every stranger without collapsing. But I-Thou moments are what make relationships <em>nourishing</em>, and most modern relationships starve from their scarcity rather than from lack of time.</p>
+          <h3>Three qualities of an I-Thou moment</h3>
+          <p><strong>Mutual presence.</strong> Both people are <em>here</em> — not mentally elsewhere, not rehearsing the next sentence, not on a phone.</p>
+          <p><strong>Non-instrumentality.</strong> In this moment, you are not trying to get anything from the other person. Not validation, not information, not amusement. The encounter is its own point.</p>
+          <p><strong>Irreducibility.</strong> You are not relating to a category (my partner, my mother, my coworker, "an Aries"). You are relating to <em>this</em> person, who exceeds every label you have for them.</p>
+          <h3>The honest audit</h3>
+          <p>Scan a recent week of conversations. How many of them contained even one I-Thou moment? Most won't. The fix is not to schedule them — you cannot schedule presence — but to make yourself capable of receiving them when they arrive. Phone away. Agenda paused. Real eyes. The cost of not doing this is that relationships continue logistically but stop nourishing.</p>
+          <blockquote>The point is not to live in I-Thou — that's not even possible. The point is to be the kind of person whose ratio is a little better than it would be by default.</blockquote>
+        `,
+        quiz: {
+          q: "What's the trap to avoid in trying to apply I-Thou?",
+          opts: [
+            "Thinking you can or should make every interaction I-Thou",
+            "Putting your phone away",
+            "Listening fully when someone speaks",
+            "Treating another person as a full subject"
+          ],
+          correct: 0,
+          why: "I-Thou is a kind of moment, not a permanent state. The goal is increasing the proportion — being available to receive these moments when they arrive — not transcending all I-It interactions."
+        },
+        journal: "Recall the last I-Thou moment you can remember. What were the conditions that made it possible — what did you do, what did you stop doing? How could you increase the chance of more this week, without trying to force them?"
+      },
+      {
+        id: "3.3",
+        title: "Care ethics — showing up, listening, noticing",
+        sub: "The unglamorous, decisive layer of moral life.",
+        flagged: "Your comment: <strong>\"learn more about this.\"</strong> Care ethics is the philosophy that takes seriously what most of moral life actually is — small, attentive acts, not abstract calculations.",
+        body: `
+          <p>Care ethics (Gilligan, Noddings, Held) emerged as a feminist challenge to abstract moral theories. It argues that ethical life is not primarily about rights, rules, or calculation — it's about responsiveness to particular people in particular relationships. We are not isolated rational agents; we are embedded in webs of dependency and mutual need from birth.</p>
+          <h3>Three verbs that do most of the work</h3>
+          <p><strong>Showing up.</strong> Easy to underestimate. It means being physically or attentionally present when it is inconvenient, repeatedly, without being asked. Most of the people who shaped you did this for you in ways you may not have catalogued. The friend who came to the hospital. The parent who waited up. The colleague who stayed late on a hard day.</p>
+          <p><strong>Listening.</strong> A specific skill. Not waiting for your turn. Not formulating your response. Not silently diagnosing. Receiving the other person's experience on its own terms long enough that they feel met. Nel Noddings calls this <em class="term">engrossment</em> — temporarily letting the other person's reality matter as much to you as your own.</p>
+          <p><strong>Noticing.</strong> The most rare and most consequential. Catching the small signal — the slightly off voice, the unanswered text, the way someone goes quiet — and choosing to respond to it rather than letting it pass. Care ethicists argue that whole lives are saved or lost in this third register, and that most failures of care look not like cruelty but like inattention.</p>
+          <h3>The deep claim</h3>
+          <p>Care ethics says the abstract moral theories miss the texture of where ethics actually lives — in particular relationships with particular people. A grand commitment to "humanity" that fails to show up for the specific human in front of you is not a moral achievement; it's an evasion.</p>
+        `,
+        quiz: {
+          q: "Which of the three care-ethics verbs do practitioners say is most often where moral failures actually happen?",
+          opts: [
+            "Showing up — people simply don't",
+            "Listening — people stop hearing",
+            "Noticing — people miss the small signal and then it's too late",
+            "Acting — people fail to take action"
+          ],
+          correct: 2,
+          why: "Most failures of care look not like cruelty but like inattention. Noticing — catching the small signal — is the most consequential and the most easily missed."
+        },
+        journal: "Who in your life right now is sending a small signal that you've half-noticed but not acted on? What would noticing more fully require — and what would you do in response?"
+      },
+      {
+        id: "3.4",
+        title: "Simone Weil on attention",
+        sub: "The rarest, hardest form of generosity.",
+        flagged: "Your comment: <strong>\"wow learn about this.\"</strong> Weil's claim is short, simple, and one of the most demanding sentences in modern philosophy.",
+        body: `
+          <p>Simone Weil — philosopher, mystic, and one of the strangest moral imaginations of the twentieth century — wrote that <em>the rarest and purest form of generosity is attention</em>. Not advice. Not help. Not resources. The willingness to truly attend to another person's reality.</p>
+          <h3>Why she thought attention was so hard</h3>
+          <p>Because of how easily it is corrupted. Most of what we call "listening" is actually pattern-matching: we hear the first few words and pre-load our response, our advice, our judgment, our analogy from our own life. The other person's experience never quite arrives — it gets metabolized into our framework before it lands.</p>
+          <p>True attention, Weil said, requires <em>waiting</em>. Keeping yourself empty and available long enough that the other person's reality can actually arrive on its own terms. She called this <em class="term">suspending the self</em>.</p>
+          <h3>The sentence that does most of the work</h3>
+          <blockquote>The soul of the person you are attending to is asking: what are you going through?<br>That question can only be heard if you stop talking — including silently, inside your own head.</blockquote>
+          <p>Weil thought attention was not a soft virtue but the hardest one — and that political and personal injustice almost always begin in failures of attention, not in active malice. People are not unseen because someone decided to look away; they are unseen because no one ever attended in the first place.</p>
+          <h3>The exercise she would prescribe</h3>
+          <p>In the next hard conversation you have, go thirty seconds longer than feels natural before responding. Let the silence be the response. See what arrives in it.</p>
+        `,
+        quiz: {
+          q: "Weil thinks true attention requires:",
+          opts: [
+            "Asking the right follow-up question",
+            "Suspending the self — staying empty and available long enough that the other person's reality can actually arrive",
+            "Diagnosing the problem accurately",
+            "Reassuring the other person"
+          ],
+          correct: 1,
+          why: "Attention, for Weil, is the willingness to wait — to keep yourself empty rather than rushing to metabolize the other person into your framework."
+        },
+        journal: "Try Weil's exercise this week. Pick one conversation. Add thirty seconds of silence before each response. Afterward, journal: what arrived in the silence that wouldn't have otherwise?"
+      }
+    ]
+  },
+  {
+    week: 4,
+    title: "Community, Belonging & Building Your Worldview",
+    blurb: "Communitarianism's strong claim that belonging is constitutive of personhood, loneliness as civic crisis, and the ongoing project of composing your own worldview.",
+    chapters: [
+      {
+        id: "4.1",
+        title: "Communitarianism — belonging as constitutive",
+        sub: "Your strongest reaction in the doc was here.",
+        flagged: "Your comment: <strong>\"woah.\"</strong> The line: <em>\"belonging is not a luxury or a preference but a condition of becoming a person at all.\"</em> Here's why it lands so hard.",
+        body: `
+          <p>Communitarianism (Charles Taylor, Michael Sandel, Alasdair MacIntyre) pushes back against the dominant modern story of the self — what we can call the <em class="term">supermarket model of identity</em>.</p>
+          <h3>The supermarket model — and why it's backwards</h3>
+          <p>The supermarket model says: the self is a sovereign chooser who arrives complete and then selects values, relationships, and communities the way one selects groceries. You pick your career, your beliefs, your friends, your traditions, from an open menu.</p>
+          <p>Communitarians say this gets the order backwards. The language you think in. The categories that feel intuitive. The moral reactions you experience as instinct. The things you find meaningful. These were not chosen. They were <em>transmitted</em> — through families, neighborhoods, traditions, shared practices, accidents of geography. You did not pick the lens. The lens is what allows you to pick anything else.</p>
+          <h3>Why the claim is "woah"</h3>
+          <p>If belonging is <em>constitutive</em> — not just nice, but a condition of becoming a self at all — then several modern assumptions need rethinking.</p>
+          <p>A maximally free life, lived without genuine membership in any community, is not the freest life. It's the <em>thinnest</em> one. The self that emerges from no community has nothing to be free with.</p>
+          <p>Investing in community — even imperfect, demanding, slow community — is not a hobby or a preference. It's part of the basic infrastructure of being a person. You are not adding something optional. You are building the ground you stand on.</p>
+          <p>The erosion of community is not just a sad social trend. It's a philosophical emergency, because it removes the precondition of personhood for the people living through it.</p>
+        `,
+        quiz: {
+          q: "The communitarian claim that belonging is \"constitutive\" of personhood means:",
+          opts: [
+            "Communities are nice to have if you can find one",
+            "Community is a moral obligation imposed on you",
+            "You do not pre-exist your communities — the values, language, and categories that make you a self were transmitted by them",
+            "Strong communities are better than weak ones"
+          ],
+          correct: 2,
+          why: "Constitutive means: you can't bootstrap a self out of nothing. The lens that lets you make any choice was given by the communities that formed you."
+        },
+        journal: "Name two communities — broadly defined — that constituted you. Which of their gifts do you still carry? Which gift have you been undervaluing, and what would investing back in it look like?"
+      },
+      {
+        id: "4.2",
+        title: "Loneliness as a civic crisis",
+        sub: "Not a personal failure. A signal.",
+        flagged: "You highlighted the structural response: <em>\"invest in community, practice hospitality, show up imperfectly and repeatedly.\"</em>",
+        body: `
+          <p>Contemporary philosophers have begun to treat loneliness not as a personal failure but as a philosophical and civic crisis. To be chronically unseen, ungrouped, un-belonging is to be denied something <em>constitutive</em> of human personhood — which is why it hurts in a way that ordinary disappointment does not.</p>
+          <h3>The reframe</h3>
+          <p>If loneliness is a signal — like hunger — then the response is not self-improvement (more confidence, more charisma, more therapy alone). It is structural. The same way you cannot "personality-trait" your way out of a food desert, you cannot personality-trait your way out of a community desert.</p>
+          <h3>What the structural response looks like</h3>
+          <p><strong>Invest in community.</strong> Show up to the imperfect group, the awkward dinner, the regular Tuesday class. Communities are slow accretions, not events. Be present to one for long enough that you become part of its memory.</p>
+          <p><strong>Practice hospitality.</strong> Open your space. Cook for people. Host the small thing. The act of hosting reverses the consumer-of-community posture and makes you a producer of belonging — for yourself and others.</p>
+          <p><strong>Show up imperfectly and repeatedly.</strong> The fantasy that you'll show up "when you have it together" is the loneliness trap. Communities form among people who show up <em>now</em>, awkward and incomplete, and keep showing up.</p>
+          <blockquote>The cure for loneliness is not better self-presentation. It is a few unglamorous habits, held over years.</blockquote>
+        `,
+        quiz: {
+          q: "Why do contemporary philosophers say loneliness should be treated structurally, not just as a personal issue?",
+          opts: [
+            "Because lonely people are weak",
+            "Because belonging is constitutive of personhood — the absence of it isn't a feeling problem, it's a denial of a condition of being a person",
+            "Because therapy doesn't work",
+            "Because community is always virtuous"
+          ],
+          correct: 1,
+          why: "Once you see belonging as constitutive — not optional — the response can't be purely individual. It has to be about rebuilding the conditions in which selves form."
+        },
+        journal: "Which one unglamorous habit could you commit to this season — a regular group, a hosted ritual, a recurring presence — that would tend to community rather than waiting for it to find you?"
+      },
+      {
+        id: "4.3",
+        title: "Building your worldview",
+        sub: "Coherent, not airtight.",
+        flagged: "You highlighted: <em>\"a worldview is not a list of positions. It is a coherent orientation — a way of standing in the world.\"</em>",
+        body: `
+          <p>A worldview is not a list of declared positions on free will and meaning and ethics, neatly filed. It is a coherent orientation — a way of standing in the world that shapes how you perceive, interpret, and respond. Building one consciously is one of the most important projects you can undertake, and it is never truly finished.</p>
+          <h3>Four working principles</h3>
+          <p><strong>Tolerate productive inconsistency.</strong> You don't need a single airtight system. Real lives are philosophically plural. You may find Stoic tools useful for managing anxiety, hold existentialist views about meaning, and be moved by care ethics in relationships. What matters is that you are aware of the tensions and can think through them when they arise.</p>
+          <p><strong>Test your views against your life.</strong> Philosophy that stays in the head is incomplete. When something strikes you as true, ask: what would it mean to <em>act</em> on this? When you notice yourself behaving in a way that conflicts with a stated value, that is not hypocrisy — it is data. It tells you something about what you actually believe versus what you think you believe.</p>
+          <p><strong>Practice epistemic humility.</strong> The history of philosophy is largely a history of confident people being eventually shown to be wrong, or at least incomplete. Hold your views firmly enough to act on them, loosely enough to revise them.</p>
+          <p><strong>Return to the question of the good life often.</strong> The question of what flourishing looks like <em>for you</em> — not in general, but specifically, given who you are right now — deserves to be revisited every few years as you change.</p>
+        `,
+        quiz: {
+          q: "Which is the best stance toward your own philosophical views, by the principles in this course?",
+          opts: [
+            "Choose one school and adhere to it strictly to remain consistent",
+            "Avoid declaring views at all, to stay open",
+            "Hold them firmly enough to act on them, loosely enough to revise them",
+            "Adopt whichever framework is most popular"
+          ],
+          correct: 2,
+          why: "Epistemic humility plus action. Confidence proportional to evidence, with the willingness to update when the evidence shifts."
+        },
+        journal: "Draft your worldview in one paragraph. Not perfect — first pass. What do you believe about the self, about meaning, about how to live, about what you owe other people? Where are the tensions? Keep this. Revisit it in six months."
+      },
+      {
+        id: "4.4",
+        title: "Where to go next",
+        sub: "A reading list shaped by your highlights.",
+        flagged: "Curated to extend the threads you marked — existentialism, friendship, I-Thou, attention, community.",
+        body: `
+          <h3>If existentialism / self-authorship pulled hardest</h3>
+          <p><em>The Myth of Sisyphus</em> by Albert Camus. <em>Existentialism Is a Humanism</em> by Sartre — the shortest, clearest entry. <em>The Second Sex</em> (selections) by Simone de Beauvoir.</p>
+          <h3>If you want Aristotle's friendship up close</h3>
+          <p>Books VIII and IX of the <em>Nicomachean Ethics</em>. Skip the rest of the book first if it's intimidating; those two are the heart for friendship.</p>
+          <h3>If Buber landed</h3>
+          <p><em>I and Thou</em>. Short, dense, repays slow reading. The Walter Kaufmann translation is the standard.</p>
+          <h3>If care ethics and Weil landed</h3>
+          <p><em>Caring</em> by Nel Noddings — foundational. <em>Waiting for God</em> by Simone Weil — contains her essay on attention; transformative and short. <em>The Lonely City</em> by Olivia Laing — extraordinary on loneliness and connection.</p>
+          <h3>If utilitarianism / political philosophy is the live thread</h3>
+          <p><em>Justice: What's the Right Thing to Do?</em> by Michael Sandel (book and free Harvard course at justiceharvard.org). <em>A Theory of Justice</em> by John Rawls — or a good summary; the original is long.</p>
+          <h3>For ongoing practice</h3>
+          <p><em>Meditations</em> by Marcus Aurelius — the most practical philosophical text ever written. <em>Sophie's World</em> by Jostein Gaarder — a novel that doubles as a history of philosophy. The podcasts <em>Philosophy Bites</em> and <em>The Partially Examined Life</em>.</p>
+          <blockquote>The philosopher's ultimate tool is not a system. It is a question held with enough patience that it begins to answer itself. Begin anywhere. Begin now.</blockquote>
+        `,
+        quiz: {
+          q: "Which book would best extend your interest in attention, listening, and the moral life of small acts?",
+          opts: [
+            "A Theory of Justice by John Rawls",
+            "The Myth of Sisyphus by Camus",
+            "Waiting for God by Simone Weil",
+            "Meditations by Marcus Aurelius"
+          ],
+          correct: 2,
+          why: "Weil's essay on attention is in this collection. It is short, demanding, and directly extends the thread you flagged."
+        },
+        journal: "Pick one book from this list to start within two weeks. Write the title here. Add a sentence about why it's the right next step for the person you're trying to become."
+      }
+    ]
+  }
+];
+
+// =========================================================
+//  State (localStorage)
+// =========================================================
+const LS_KEY = "philosophy_course_v1";
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveState(s) { localStorage.setItem(LS_KEY, JSON.stringify(s)); }
+let state = loadState();
+state.completed = state.completed || {};
+state.journals = state.journals || {};
+state.quizPicks = state.quizPicks || {};
+state.openWeek = (typeof state.openWeek === "number") ? state.openWeek : 1;
+
+// =========================================================
+//  Render
+// =========================================================
+function totalChapters() { return COURSE.reduce((n, w) => n + w.chapters.length, 0); }
+function completedCount() { return Object.keys(state.completed).filter(k => state.completed[k]).length; }
+function updateProgress() {
+  const pct = Math.round(100 * completedCount() / totalChapters());
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-text").textContent = `${completedCount()} / ${totalChapters()} chapters complete`;
+}
+
+function renderSidebar() {
+  const wrap = document.getElementById("weeks");
+  wrap.innerHTML = "";
+  COURSE.forEach(w => {
+    const wEl = document.createElement("div");
+    wEl.className = "week" + (state.openWeek === w.week ? " open" : "");
+    const wHead = document.createElement("div");
+    wHead.className = "week-head";
+    const wDoneCount = w.chapters.filter(c => state.completed[c.id]).length;
+    wHead.innerHTML = `<span class="wk-title">Week ${w.week}: ${w.title.split('—')[0].trim()}</span><span class="wk-meta">${wDoneCount}/${w.chapters.length}</span>`;
+    wHead.onclick = () => { state.openWeek = (state.openWeek === w.week) ? null : w.week; saveState(state); renderSidebar(); };
+    wEl.appendChild(wHead);
+    const wBody = document.createElement("div");
+    wBody.className = "week-body";
+    w.chapters.forEach(c => {
+      const a = document.createElement("a");
+      a.className = "ch-link" + (state.completed[c.id] ? " done" : "") + (state.currentId === c.id ? " active" : "");
+      a.innerHTML = `<span class="ch-dot"></span>${c.id} · ${c.title}`;
+      a.onclick = () => loadChapter(c.id);
+      wBody.appendChild(a);
+    });
+    wEl.appendChild(wBody);
+    wrap.appendChild(wEl);
+  });
+  updateProgress();
+}
+
+function goHome() {
+  state.currentId = null;
+  document.getElementById("main").innerHTML = renderWelcome();
+  renderSidebar();
+}
+
+function renderWelcome() {
+  let html = `
+    <div class="welcome">
+      <div class="crumbs">A self-guided course in philosophy</div>
+      <h2>How to Think About Being Alive</h2>
+      <div class="lede">A four-week course shaped around the passages you highlighted. Nineteen chapters. Brief quizzes to make ideas stick. Journal prompts to test ideas against your life. Everything saves locally to your browser.</div>
+  `;
+  COURSE.forEach(w => {
+    const done = w.chapters.filter(c => state.completed[c.id]).length;
+    html += `
+      <div class="week-card" onclick="state.openWeek=${w.week};saveState(state);loadChapter('${w.chapters[0].id}')">
+        <h3>Week ${w.week} — ${w.title}</h3>
+        <p>${w.blurb}</p>
+        <p style="margin-top:10px;font-size:13px;color:var(--accent);">${done} / ${w.chapters.length} complete · Start with ${w.chapters[0].id} ${w.chapters[0].title}</p>
+      </div>
+    `;
+  });
+  html += `<div class="footer-note">Progress saves locally. Open this file on the same browser to resume any time.</div></div>`;
+  return html;
+}
+
+function findChapter(id) {
+  for (const w of COURSE) for (const c of w.chapters) if (c.id === id) return { week: w, chapter: c };
+  return null;
+}
+function nextChapter(id) {
+  const all = COURSE.flatMap(w => w.chapters.map(c => ({...c, _week: w.week})));
+  const i = all.findIndex(c => c.id === id);
+  return (i >= 0 && i < all.length - 1) ? all[i + 1] : null;
+}
+function prevChapter(id) {
+  const all = COURSE.flatMap(w => w.chapters.map(c => ({...c, _week: w.week})));
+  const i = all.findIndex(c => c.id === id);
+  return (i > 0) ? all[i - 1] : null;
+}
+
+function loadChapter(id) {
+  state.currentId = id;
+  state.openWeek = findChapter(id).week.week;
+  saveState(state);
+  const { week, chapter } = findChapter(id);
+  const journalKey = "j_" + id;
+  const journalText = state.journals[journalKey] || "";
+  const quizPick = state.quizPicks[id];
+  const prev = prevChapter(id);
+  const next = nextChapter(id);
+  const isDone = !!state.completed[id];
+
+  let optsHtml = chapter.quiz.opts.map((o, i) => {
+    let cls = "opt";
+    if (quizPick !== undefined) {
+      if (i === chapter.quiz.correct) cls += " correct";
+      else if (i === quizPick) cls += " incorrect";
+    } else if (state.tempPick === i) cls += " selected";
+    return `<div class="${cls}" data-i="${i}" onclick="pickOpt('${id}', ${i})">${o}</div>`;
+  }).join("");
+
+  let feedbackHtml = "";
+  if (quizPick !== undefined) {
+    const correct = quizPick === chapter.quiz.correct;
+    feedbackHtml = `<div class="feedback show ${correct ? "ok" : "no"}">${correct ? "Correct. " : "Not quite. "}${chapter.quiz.why}</div>`;
+  }
+
+  document.getElementById("main").innerHTML = `
+    <div class="crumbs">Week ${week.week} · Chapter ${chapter.id}</div>
+    <h2 class="ch-title">${chapter.title}</h2>
+    <div class="ch-sub">${chapter.sub}</div>
+    <div class="flagged">${chapter.flagged}</div>
+    <div class="content">${chapter.body}</div>
+
+    <div class="card">
+      <h4>Quick check</h4>
+      <div class="q">${chapter.quiz.q}</div>
+      ${optsHtml}
+      ${feedbackHtml}
+      ${quizPick === undefined ? `<div style="margin-top:14px;"><button class="btn primary" onclick="submitQuiz('${id}')">Check answer</button></div>` : ""}
+    </div>
+
+    <div class="card journal">
+      <h4>Journal prompt</h4>
+      <div class="q">${chapter.journal}</div>
+      <textarea id="journal-${id}" placeholder="Write freely. Saves automatically.">${journalText}</textarea>
+      <div class="save-row"><span id="save-status-${id}">Saved automatically as you type.</span></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn" ${prev ? "" : "disabled"} onclick="${prev ? "loadChapter('"+prev.id+"')" : ""}">← ${prev ? "Previous" : "Start"}</button>
+      <button class="btn ${isDone ? "" : "primary"}" onclick="toggleDone('${id}')">${isDone ? "Marked complete ✓" : "Mark complete"}</button>
+      <button class="btn" ${next ? "" : "disabled"} onclick="${next ? "loadChapter('"+next.id+"')" : ""}">${next ? "Next" : "Finish"} →</button>
+    </div>
+  `;
+
+  const ta = document.getElementById("journal-" + id);
+  if (ta) {
+    let timer;
+    ta.addEventListener("input", () => {
+      state.journals[journalKey] = ta.value;
+      document.getElementById("save-status-" + id).textContent = "Saving…";
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        saveState(state);
+        document.getElementById("save-status-" + id).textContent = "Saved.";
+        setTimeout(() => {
+          const el = document.getElementById("save-status-" + id);
+          if (el) el.textContent = "Saved automatically as you type.";
+        }, 1200);
+      }, 350);
+    });
+  }
+
+  renderSidebar();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function pickOpt(id, i) {
+  // Only allow selection if not already submitted
+  if (state.quizPicks[id] !== undefined) return;
+  state.tempPick = i;
+  document.querySelectorAll(".opt").forEach((el, idx) => {
+    el.classList.toggle("selected", parseInt(el.dataset.i) === i);
+  });
+}
+function submitQuiz(id) {
+  if (state.tempPick === undefined) {
+    alert("Pick an answer first.");
+    return;
+  }
+  state.quizPicks[id] = state.tempPick;
+  delete state.tempPick;
+  saveState(state);
+  loadChapter(id);
+}
+function toggleDone(id) {
+  state.completed[id] = !state.completed[id];
+  saveState(state);
+  loadChapter(id);
+}
+
+// =========================================================
+//  Init
+// =========================================================
+renderSidebar();
+if (state.currentId && findChapter(state.currentId)) {
+  loadChapter(state.currentId);
+} else {
+  goHome();
+}
+</script>
+</body>
+</html>
